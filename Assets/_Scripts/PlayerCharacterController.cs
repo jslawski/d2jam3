@@ -25,10 +25,6 @@ public class PlayerCharacterController : MonoBehaviour
         this._cameraTransform = Camera.main.transform;
         this._playerRigidbody = GetComponent<Rigidbody>();
         this._playerCollider = GetComponentInChildren<Collider>();
-
-        
-
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()

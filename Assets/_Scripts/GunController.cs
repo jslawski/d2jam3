@@ -4,17 +4,82 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
-    private PlayerControls _playerControls;
+    [SerializeField]
+    private GameObject _seedPrefab;
 
+    [SerializeField]
+    private Transform _seedSpawnPoint;
+
+    [SerializeField]
+    private Transform _defaultTarget;
+
+    //private float _rayTraversalIncrement = 0.1f;
+    
     // Start is called before the first frame update
     void Start()
     {
-        this._playerControls = new PlayerControls();
-    }
 
-    // Update is called once per frame
+    }
+    
     void Update()
     {
-        
+        if (PlayerControlsManager.instance.shootInitiated == true)
+        { 
+            PlayerControlsManager.instance.shootInitiated = false;
+
+            this.ShootSeed();
+        }
     }
+
+    private void ShootSeed()
+    {
+        GameObject seedInstance = Instantiate(this._seedPrefab, this._seedSpawnPoint.position, new Quaternion());
+        SeedController seedController = seedInstance.GetComponent<SeedController>();
+
+        seedController.LaunchSeed(this.GetTrajectory());
+    }
+
+    private Vector3 GetTrajectory()
+    {
+        Ray cameraRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        RaycastHit hitInfo = new RaycastHit();
+
+        Vector3 targetPosition = this._defaultTarget.position;
+        
+        if (Physics.Raycast(cameraRay, out hitInfo, 100.0f))
+        {
+            targetPosition = hitInfo.point;
+        }
+    
+        return (targetPosition - this._seedSpawnPoint.position).normalized;
+    }
+
+    /*
+    private Vector3 GetTrajectory()
+    { 
+        Ray cameraRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        Ray gunRay = new Ray(this._seedSpawnPoint.position, this._seedSpawnPoint.forward);
+
+        float currentIncrement = 0;
+
+        float currentDistance = Vector3.Distance(cameraRay.GetPoint(currentIncrement), gunRay.GetPoint(currentIncrement));
+        float minDistance = float.NegativeInfinity;
+
+        float safetyIncrement = 100f;
+
+        while (currentDistance > minDistance || currentIncrement < safetyIncrement)
+        {
+            minDistance = currentDistance;
+
+            currentIncrement += this._rayTraversalIncrement;
+            currentDistance = Vector3.Distance(cameraRay.GetPoint(currentIncrement), gunRay.GetPoint(currentIncrement));
+
+            
+        }
+
+        Debug.LogError("Min Distance: " + minDistance + " Current Increment: " + currentIncrement);
+
+        return gunRay.GetPoint(minDistance);
+    }
+    */
 }

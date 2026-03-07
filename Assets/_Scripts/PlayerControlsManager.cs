@@ -13,10 +13,13 @@ public class PlayerControlsManager : MonoBehaviour
     public Vector3 lookDelta = Vector3.zero;
     [HideInInspector]
     public bool jumpInitiated = false;
-
+    [HideInInspector]
+    public bool shootInitiated = false;
 
     private void Awake()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+
         if (instance == null)
         {
             instance = this;
@@ -29,6 +32,8 @@ public class PlayerControlsManager : MonoBehaviour
 
         this._playerControls.PlayerMap.Jump.performed += this.ExecuteJump;
         this._playerControls.PlayerMap.Jump.canceled += this.CancelJump;
+
+        this._playerControls.PlayerMap.Shoot.performed += this.ExecuteShoot;
     }
     private void OnEnable()
     {
@@ -59,6 +64,11 @@ public class PlayerControlsManager : MonoBehaviour
     private void CancelJump(InputAction.CallbackContext context)
     {
 
+    }
+
+    private void ExecuteShoot(InputAction.CallbackContext context)
+    {
+        this.shootInitiated = true;
     }
 
     public bool IsPressingForward()

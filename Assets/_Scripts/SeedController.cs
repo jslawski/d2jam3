@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class SeedController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]    
+    private Rigidbody _seedRigidbody;
+
+    [SerializeField]
+    private float _launchSpeed;
+
+    private float _expiryTime = 5.0f;
+
+    public void LaunchSeed(Vector3 trajectory)
     {
-        
+        this._seedRigidbody.velocity = trajectory * this._launchSpeed;
+
+        StartCoroutine(this.ExpireAfterTime());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator ExpireAfterTime()
     {
-        
+        yield return new WaitForSeconds(this._expiryTime);
+
+        Destroy(this.gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
     }
 }
