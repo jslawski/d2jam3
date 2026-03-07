@@ -11,8 +11,11 @@ public class PlayerCharacterController : MonoBehaviour
 
     private Vector3 _moveDirection = Vector3.zero;
 
-    private float _moveAcceleration = 50.0f;
-    private float _maxMoveVelocity = 20.0f;
+    private float _moveAcceleration = 5.0f;
+    private float _maxMoveVelocity = 30.0f;
+    private Coroutine _moveLerpCoroutine = null;
+    
+    
     private float _maxFallVelocity = 300.0f;
     private float _maxVerticalAngle = 85.0f;
 
@@ -21,8 +24,7 @@ public class PlayerCharacterController : MonoBehaviour
     private bool _jumpBuffered = false;
 
     private Quaternion _targetRotation = Quaternion.identity;
-    [SerializeField]
-    private float _cameraRotateSpeed = 5.0f;
+    private float _cameraRotateSpeed = 7.0f;
     private Coroutine _cameraSlerpCoroutine = null;
 
     private void Awake()
@@ -86,9 +88,6 @@ public class PlayerCharacterController : MonoBehaviour
         }
 
         this._cameraSlerpCoroutine = StartCoroutine(this.SlerpToTargetRotation());
-
-        //this._cameraTransform.transform.Rotate(Vector3.up, PlayerControlsManager.instance.lookDelta.y, Space.World);
-
     }
 
     private IEnumerator SlerpToTargetRotation()
@@ -104,7 +103,26 @@ public class PlayerCharacterController : MonoBehaviour
     {
         Vector3 lateralVelocity = this._moveDirection * this._maxMoveVelocity;
 
-        this._playerRigidbody.velocity = new Vector3(lateralVelocity.x, this._playerRigidbody.velocity.y, lateralVelocity.z);
+        if (this._moveLerpCoroutine != null)
+        {
+            StopCoroutine(this._moveLerpCoroutine);
+        }
+
+        this._moveLerpCoroutine = StartCoroutine(this.LerpToTargetLateralVelocity(lateralVelocity));
+    }
+
+    private IEnumerator LerpToTargetLateralVelocity(Vector3 lateralVelocity)
+    {
+        Vector3 targetVelocity = new Vector3(lateralVelocity.x, this._playerRigidbody.velocity.y, lateralVelocity.z);
+
+        int iteration = 0;
+
+        while (this._playerRigidbody.velocity != targetVelocity)
+        {
+            this._playerRigidbody.velocity = Vector3.Lerp(this._playerRigidbody.velocity, targetVelocity, this._moveAcceleration * Time.fixedDeltaTime);
+            yield return new WaitForFixedUpdate();
+            iteration++;
+        }
     }
 
     private void UpdateVerticalVelocity()
