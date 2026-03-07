@@ -16,6 +16,8 @@ public class PlayerControlsManager : MonoBehaviour
     [HideInInspector]
     public bool shootInitiated = false;
 
+    private float _mouseSensitivity = 0.5f;
+
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -49,6 +51,7 @@ public class PlayerControlsManager : MonoBehaviour
     {
         Vector2 mouseDelta = context.ReadValue<Vector2>();
         this.lookDelta = new Vector3(-mouseDelta.y, mouseDelta.x, 0.0f);
+        this.lookDelta *= this._mouseSensitivity;
     }
 
     private void StopLookDirection(InputAction.CallbackContext context)

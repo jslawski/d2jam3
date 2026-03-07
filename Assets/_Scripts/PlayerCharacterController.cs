@@ -20,6 +20,11 @@ public class PlayerCharacterController : MonoBehaviour
 
     private bool _jumpBuffered = false;
 
+    private Quaternion _targetRotation = Quaternion.identity;
+    [SerializeField]
+    private float _cameraRotateSpeed = 5.0f;
+    private Coroutine _cameraSlerpCoroutine = null;
+
     private void Awake()
     {      
         this._cameraTransform = Camera.main.transform;
@@ -48,6 +53,62 @@ public class PlayerCharacterController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        this.UpdateCameraRotation();
+        this.UpdateLateralVelocity();
+        this.UpdateVerticalVelocity();               
+    }
+
+
+    private float GetClampedXAngle()
+    {
+        float xRotation = this._cameraTransform.rotation.eulerAngles.x + PlayerControlsManager.instance.lookDelta.x;
+
+        if (xRotation > 180.0f)
+        {
+            xRotation -= 360.0f;
+        }
+
+        xRotation = Mathf.Clamp(xRotation, -this._maxVerticalAngle, this._maxVerticalAngle);
+
+        return xRotation;
+    }
+
+    private void UpdateCameraRotation()
+    {
+        Quaternion yRotation = Quaternion.AngleAxis(PlayerControlsManager.instance.lookDelta.y, Vector3.up);   
+        Quaternion xRotation = Quaternion.Euler(this.GetClampedXAngle(), this._cameraTransform.rotation.eulerAngles.y, 0.0f);        
+
+        this._targetRotation = yRotation * xRotation;
+
+        if (this._cameraSlerpCoroutine != null)
+        {
+            StopCoroutine(this._cameraSlerpCoroutine);
+        }
+
+        this._cameraSlerpCoroutine = StartCoroutine(this.SlerpToTargetRotation());
+
+        //this._cameraTransform.transform.Rotate(Vector3.up, PlayerControlsManager.instance.lookDelta.y, Space.World);
+
+    }
+
+    private IEnumerator SlerpToTargetRotation()
+    {
+        while (this._cameraTransform.rotation != this._targetRotation)
+        {
+            this._cameraTransform.rotation = Quaternion.Slerp(this._cameraTransform.rotation, this._targetRotation, this._cameraRotateSpeed * Time.fixedDeltaTime);
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    private void UpdateLateralVelocity()
+    {
+        Vector3 lateralVelocity = this._moveDirection * this._maxMoveVelocity;
+
+        this._playerRigidbody.velocity = new Vector3(lateralVelocity.x, this._playerRigidbody.velocity.y, lateralVelocity.z);
+    }
+
+    private void UpdateVerticalVelocity()
+    {
         if (this.IsGrounded())
         {
             this._playerRigidbody.velocity = new Vector3(this._playerRigidbody.velocity.x, 0.0f, this._playerRigidbody.velocity.z);
@@ -67,60 +128,7 @@ public class PlayerCharacterController : MonoBehaviour
             {
                 this._jumpBuffered = true;
             }
-        }
-
-        Vector3 lateralVelocity = this._moveDirection * this._maxMoveVelocity;
-        
-        //this._playerRigidbody.AddForce(this._moveDirection * this._moveAcceleration, ForceMode.Acceleration);
-
-        this._cameraTransform.transform.Rotate(Vector3.up, PlayerControlsManager.instance.lookDelta.y, Space.World);
-
-        this._cameraTransform.rotation = Quaternion.Euler(this.GetClampedXAngle(), this._cameraTransform.rotation.eulerAngles.y, 0.0f);
-
-        this._playerRigidbody.velocity = new Vector3(lateralVelocity.x, this._playerRigidbody.velocity.y, lateralVelocity.z);
-
-        this.CapMaxVelocity();
-    }
-
-    private float GetClampedXAngle()
-    {
-        float xRotation = this._cameraTransform.rotation.eulerAngles.x + PlayerControlsManager.instance.lookDelta.x;
-
-        if (xRotation > 180.0f)
-        {
-            xRotation -= 360.0f;
-        }
-
-        xRotation = Mathf.Clamp(xRotation, -this._maxVerticalAngle, this._maxVerticalAngle);
-
-        return xRotation;
-    }
-
-    private void CapMaxVelocity()
-    {
-        //this.CapLateralVelocity();
-        //this.CapVerticalVelocity();
-    }
-
-    private void CapLateralVelocity()
-    {
-        Vector2 lateralVelocityVector = new Vector2(this._playerRigidbody.velocity.x, this._playerRigidbody.velocity.z);
-
-        if (lateralVelocityVector.magnitude > this._maxMoveVelocity)
-        {
-            lateralVelocityVector = lateralVelocityVector.normalized * this._maxMoveVelocity;
-
-            this._playerRigidbody.velocity = new Vector3(lateralVelocityVector.x, this._playerRigidbody.velocity.y, lateralVelocityVector.y);
-            Debug.LogError("Capping Lateral Velocity");
-        }
-    }
-
-    private void CapVerticalVelocity()
-    {
-        if (this._playerRigidbody.velocity.y < -this._maxFallVelocity)
-        {
-            this._playerRigidbody.velocity = new Vector3(this._playerRigidbody.velocity.x, -this._maxFallVelocity, this._playerRigidbody.velocity.z);
-        }
+        }        
     }
 
     private Vector3 GetLatestMoveDirection()
@@ -177,4 +185,33 @@ public class PlayerCharacterController : MonoBehaviour
 
         return false;
     }
+
+    /*
+    private void CapMaxVelocity()
+    {
+        //this.CapLateralVelocity();
+        //this.CapVerticalVelocity();
+    }
+
+    private void CapLateralVelocity()
+    {
+        Vector2 lateralVelocityVector = new Vector2(this._playerRigidbody.velocity.x, this._playerRigidbody.velocity.z);
+
+        if (lateralVelocityVector.magnitude > this._maxMoveVelocity)
+        {
+            lateralVelocityVector = lateralVelocityVector.normalized * this._maxMoveVelocity;
+
+            this._playerRigidbody.velocity = new Vector3(lateralVelocityVector.x, this._playerRigidbody.velocity.y, lateralVelocityVector.y);
+            Debug.LogError("Capping Lateral Velocity");
+        }
+    }
+
+    private void CapVerticalVelocity()
+    {
+        if (this._playerRigidbody.velocity.y < -this._maxFallVelocity)
+        {
+            this._playerRigidbody.velocity = new Vector3(this._playerRigidbody.velocity.x, -this._maxFallVelocity, this._playerRigidbody.velocity.z);
+        }
+    }
+     */
 }
