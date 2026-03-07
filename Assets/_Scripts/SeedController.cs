@@ -12,6 +12,8 @@ public class SeedController : MonoBehaviour
 
     private float _expiryTime = 5.0f;
 
+    private ContactPoint _collisionPoint;
+
     public void LaunchSeed(Vector3 trajectory)
     {
         this._seedRigidbody.velocity = trajectory * this._launchSpeed;
@@ -29,5 +31,16 @@ public class SeedController : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Plantable")
+        {
+            this._collisionPoint = collision.contacts[0];
+            this._seedRigidbody.velocity = Vector3.zero;
+            this._seedRigidbody.gameObject.transform.position = this._collisionPoint.point;
+            this._seedRigidbody.isKinematic = true;
+        }
     }
 }
