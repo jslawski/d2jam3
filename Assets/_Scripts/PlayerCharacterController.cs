@@ -6,18 +6,25 @@ using UnityEngine.InputSystem;
 public class PlayerCharacterController : MonoBehaviour
 {
     private Transform _cameraTransform;
-    private Rigidbody _playerRigidbody;    
+    private Rigidbody _playerRigidbody;
+    private Collider _playerCollider;
 
     private PlayerControls _playerControls;
 
     private Vector3 _moveDirection = Vector3.zero;
 
     private float _moveAcceleration = 30.0f;
-    private float _maxMoveVelocity = 50.0f;
-    private float _maxFallVelocity = 30.0f;
+    private float _maxMoveVelocity = 10.0f;
+    private float _maxFallVelocity = 300.0f;
     private float _maxVerticalAngle = 60.0f;
 
     private Vector3 _lookDelta = Vector3.zero;
+
+    private float _jumpForce = 30.0f;
+
+    private bool _jumpInitiated = false;
+
+    private bool _jumpBuffered = false;
 
     private void Awake()
     {
@@ -25,9 +32,13 @@ public class PlayerCharacterController : MonoBehaviour
 
         this._cameraTransform = Camera.main.transform;
         this._playerRigidbody = GetComponent<Rigidbody>();
+        this._playerCollider = GetComponentInChildren<Collider>();
 
         this._playerControls.PlayerMap.Look.performed += this.UpdateLookDirection;
         this._playerControls.PlayerMap.Look.canceled += this.StopLookDirection;
+
+        this._playerControls.PlayerMap.Jump.performed += this.ExecuteJump;
+        this._playerControls.PlayerMap.Jump.canceled += this.CancelJump;
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -53,13 +64,59 @@ public class PlayerCharacterController : MonoBehaviour
         this._lookDelta = Vector3.zero;
     }
 
-    private void Update()
+    private void ExecuteJump(InputAction.CallbackContext context)
     {
+        if (this.IsGrounded() == true)
+        {
+            this._jumpInitiated = true;
+        }
+        else if (this.ShouldBufferJump() == true)
+        {
+            this._jumpBuffered = true;
+        }
+    }
+
+    private void CancelJump(InputAction.CallbackContext context)
+    { 
+    
+    }    
+
+    private void Update()
+    {        
+        //float raycastMagnitude = this._playerCollider.bounds.extents.y + 3.0f;
+        //Debug.DrawLine(this._playerCollider.transform.position, this._playerCollider.transform.position + (Vector3.down * raycastMagnitude), Color.red, 0.01f);
+
         this._moveDirection = this.GetLatestMoveDirection();
+
+        if (this.IsGrounded() == true)
+        {
+            this._playerRigidbody.useGravity = false;
+            if (this._jumpBuffered == true)
+            {
+                this._jumpInitiated = true;
+                this._jumpBuffered = false;
+            }
+        }
+        else
+        {
+            this._playerRigidbody.useGravity = true;
+        }
     }
 
     private void FixedUpdate()
     {
+        if (this.IsGrounded())
+        {
+            this._playerRigidbody.velocity = new Vector3(this._playerRigidbody.velocity.x, 0.0f, this._playerRigidbody.velocity.z);
+        }
+    
+        if (this._jumpInitiated == true)
+        {
+            this._playerRigidbody.useGravity = false;
+            this._playerRigidbody.AddForce(0.0f, this._jumpForce, 0.0f, ForceMode.Impulse);
+            this._jumpInitiated = false;
+        }
+
         this._playerRigidbody.AddForce(this._moveDirection * this._moveAcceleration, ForceMode.Acceleration);
 
         this._cameraTransform.transform.Rotate(Vector3.up, this._lookDelta.y, Space.World);
@@ -86,7 +143,7 @@ public class PlayerCharacterController : MonoBehaviour
     private void CapMaxVelocity()
     {
         this.CapLateralVelocity();
-        this.CapVerticalVelocity();
+        //this.CapVerticalVelocity();
     }
 
     private void CapLateralVelocity()
@@ -135,5 +192,30 @@ public class PlayerCharacterController : MonoBehaviour
         }
 
         return returnVector.normalized;
+    }
+
+    private bool IsGrounded()
+    {
+        float raycastMagnitude = this._playerCollider.bounds.extents.y + 0.1f;
+
+        if (Physics.Raycast(this._playerCollider.transform.position, Vector3.down, raycastMagnitude) == true)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool ShouldBufferJump()
+    {
+        float raycastMagnitude = this._playerCollider.bounds.extents.y + 2.0f;
+
+        if (Physics.Raycast(this._playerCollider.transform.position, Vector3.down, raycastMagnitude) == true)
+        {
+            //Debug.LogError("Buffering Jump!");
+            return true;
+        }
+
+        return false;
     }
 }

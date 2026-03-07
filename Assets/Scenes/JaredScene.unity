@@ -148,7 +148,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62944517}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: bf4798bb79c32954b8fc89d0de115e16, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -436,7 +436,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1467940803}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: bf4798bb79c32954b8fc89d0de115e16, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -546,7 +546,7 @@ Rigidbody:
   m_GameObject: {fileID: 1588336413}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 2
+  m_Drag: 3
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
