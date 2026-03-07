@@ -21,7 +21,7 @@ public class GunController : MonoBehaviour
 
     }
     
-    void Update()
+    void FixedUpdate()
     {
         if (PlayerControlsManager.instance.shootInitiated == true)
         { 

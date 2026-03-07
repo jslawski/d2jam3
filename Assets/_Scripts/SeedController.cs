@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SeedController : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _plantPrefab;
+    
     [SerializeField]    
     private Rigidbody _seedRigidbody;
 
@@ -12,7 +15,7 @@ public class SeedController : MonoBehaviour
 
     private float _expiryTime = 5.0f;
 
-    private ContactPoint _collisionPoint;
+    private float _timeToSpawnPlant = 0.3f;
 
     public void LaunchSeed(Vector3 trajectory)
     {
@@ -37,10 +40,29 @@ public class SeedController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Plantable")
         {
-            this._collisionPoint = collision.contacts[0];
+            ContactPoint collisionPoint = collision.contacts[0];
             this._seedRigidbody.velocity = Vector3.zero;
-            this._seedRigidbody.gameObject.transform.position = this._collisionPoint.point;
+            this._seedRigidbody.gameObject.transform.position = collisionPoint.point;
             this._seedRigidbody.isKinematic = true;
+
+            StartCoroutine(this.SpawnPlant(collisionPoint));
         }
+        else if (collision.gameObject.tag == "Plant")
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    private IEnumerator SpawnPlant(ContactPoint collisionPoint)
+    {
+        yield return new WaitForSeconds(this._timeToSpawnPlant);
+
+        GameObject plantInstance = Instantiate(this._plantPrefab, collisionPoint.point, new Quaternion());
+        plantInstance.transform.forward = collisionPoint.normal;
+
+        PlantController plantController = plantInstance.GetComponent<PlantController>();
+        plantController.GrowPlant(collisionPoint.normal);
+
+        Destroy(this.gameObject);
     }
 }

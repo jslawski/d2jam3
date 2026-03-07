@@ -11,12 +11,12 @@ public class PlayerCharacterController : MonoBehaviour
 
     private Vector3 _moveDirection = Vector3.zero;
 
-    private float _moveAcceleration = 50.0f;
+    private float _moveAcceleration = 40.0f;
     private float _maxMoveVelocity = 20.0f;
     private float _maxFallVelocity = 300.0f;
-    private float _maxVerticalAngle = 60.0f;
+    private float _maxVerticalAngle = 85.0f;
 
-    private float _jumpForce = 30.0f;
+    private float _jumpForce = 50.0f;
 
     private bool _jumpBuffered = false;
 
