@@ -11,12 +11,12 @@ public class PlayerCharacterController : MonoBehaviour
 
     private Vector3 _moveDirection = Vector3.zero;
 
-    private float _moveAcceleration = 40.0f;
+    private float _moveAcceleration = 50.0f;
     private float _maxMoveVelocity = 20.0f;
     private float _maxFallVelocity = 300.0f;
     private float _maxVerticalAngle = 85.0f;
 
-    private float _jumpForce = 50.0f;
+    private float _jumpForce = 20.0f;
 
     private bool _jumpBuffered = false;
 
@@ -68,12 +68,16 @@ public class PlayerCharacterController : MonoBehaviour
                 this._jumpBuffered = true;
             }
         }
-    
-        this._playerRigidbody.AddForce(this._moveDirection * this._moveAcceleration, ForceMode.Acceleration);
+
+        Vector3 lateralVelocity = this._moveDirection * this._maxMoveVelocity;
+        
+        //this._playerRigidbody.AddForce(this._moveDirection * this._moveAcceleration, ForceMode.Acceleration);
 
         this._cameraTransform.transform.Rotate(Vector3.up, PlayerControlsManager.instance.lookDelta.y, Space.World);
 
         this._cameraTransform.rotation = Quaternion.Euler(this.GetClampedXAngle(), this._cameraTransform.rotation.eulerAngles.y, 0.0f);
+
+        this._playerRigidbody.velocity = new Vector3(lateralVelocity.x, this._playerRigidbody.velocity.y, lateralVelocity.z);
 
         this.CapMaxVelocity();
     }
@@ -94,7 +98,7 @@ public class PlayerCharacterController : MonoBehaviour
 
     private void CapMaxVelocity()
     {
-        this.CapLateralVelocity();
+        //this.CapLateralVelocity();
         //this.CapVerticalVelocity();
     }
 
@@ -149,8 +153,10 @@ public class PlayerCharacterController : MonoBehaviour
     private bool IsGrounded()
     {
         float raycastMagnitude = this._playerCollider.bounds.extents.y + 0.1f;
+        float radius = this._playerCollider.bounds.extents.x - 0.1f;
+        RaycastHit hitInfo;
 
-        if (Physics.Raycast(this._playerCollider.transform.position, Vector3.down, raycastMagnitude) == true)
+        if (Physics.SphereCast(this._playerCollider.transform.position, radius, Vector3.down, out hitInfo, raycastMagnitude) == true)
         {
             return true;
         }
@@ -161,8 +167,10 @@ public class PlayerCharacterController : MonoBehaviour
     private bool ShouldBufferJump()
     {
         float raycastMagnitude = this._playerCollider.bounds.extents.y + 2.0f;
+        float radius = this._playerCollider.bounds.extents.x - 0.1f;
+        RaycastHit hitInfo;
 
-        if (Physics.Raycast(this._playerCollider.transform.position, Vector3.down, raycastMagnitude) == true)
+        if (Physics.SphereCast(this._playerCollider.transform.position, radius, Vector3.down, out hitInfo, raycastMagnitude) == true)
         {
             return true;
         }

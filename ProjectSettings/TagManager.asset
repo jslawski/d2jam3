@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Plantable
+  - Plant
   layers:
   - Default
   - TransparentFX

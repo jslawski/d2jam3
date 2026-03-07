@@ -67,7 +67,7 @@ public class PlayerControlsManager : MonoBehaviour
     }
 
     private void ExecuteShoot(InputAction.CallbackContext context)
-    {
+    {        
         this.shootInitiated = true;
     }
 

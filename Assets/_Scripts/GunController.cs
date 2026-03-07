@@ -13,16 +13,26 @@ public class GunController : MonoBehaviour
     [SerializeField]
     private Transform _defaultTarget;
 
+    private bool _setUpComplete = false;
+
     //private float _rayTraversalIncrement = 0.1f;
     
     // Start is called before the first frame update
-    void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitForSeconds(0.5f);
 
+        this._setUpComplete = true;
     }
     
     void FixedUpdate()
     {
+        if (this._setUpComplete == false)
+        {
+            PlayerControlsManager.instance.shootInitiated = false;   
+            return;
+        }
+    
         if (PlayerControlsManager.instance.shootInitiated == true)
         { 
             PlayerControlsManager.instance.shootInitiated = false;
