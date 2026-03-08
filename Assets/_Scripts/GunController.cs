@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
+    private struct RaycastHitCheck
+    {
+        public bool success;
+        public RaycastHit hitInfo;
+    }
+
     [SerializeField]
     private GameObject _seedPrefab;
 
     [SerializeField]
     private GameObject _bulletPrefab;
+
+    [SerializeField]
+    private DynamicReticle _dynamicReticle;
 
     [SerializeField]
     private Transform _seedSpawnPoint;
@@ -18,8 +27,18 @@ public class GunController : MonoBehaviour
 
     private bool _setUpComplete = false;
 
+    [SerializeField]
+    private LayerMask _raycastLayer;
+
     //private float _rayTraversalIncrement = 0.1f;
-    
+
+    RaycastHitCheck hitCheck = new RaycastHitCheck();
+
+    private void Awake()
+    {
+        //this._seedSpawnPoint = Camera.main.transform;
+    }
+
     // Start is called before the first frame update
     private IEnumerator Start()
     {
@@ -27,7 +46,21 @@ public class GunController : MonoBehaviour
 
         this._setUpComplete = true;
     }
-    
+
+    private void Update()
+    {
+        this.CastCameraRay();
+
+        if (hitCheck.success == true)
+        {
+            this._dynamicReticle.UpdateReticlePosition(hitCheck.hitInfo.point, hitCheck.hitInfo.normal);
+        }
+        else
+        {
+            this._dynamicReticle.UpdateReticlePosition(Camera.main.transform.position, Camera.main.transform.forward);
+        }
+    }
+
     void FixedUpdate()
     {
         if (this._setUpComplete == false)
@@ -56,7 +89,14 @@ public class GunController : MonoBehaviour
         GameObject seedInstance = Instantiate(this._seedPrefab, this._seedSpawnPoint.position, new Quaternion());
         SeedController seedController = seedInstance.GetComponent<SeedController>();
 
-        seedController.LaunchSeed(this.GetTrajectory());
+        if (this.hitCheck.success == true)
+        {
+            seedController.Launch(this.hitCheck.hitInfo.point);
+        }
+        else
+        {
+            seedController.Launch(this._defaultTarget.position);
+        }       
     }
 
     private void ShootBullet()
@@ -64,7 +104,14 @@ public class GunController : MonoBehaviour
         GameObject bulletInstance = Instantiate(this._bulletPrefab, this._seedSpawnPoint.position, new Quaternion());
         BulletController bulletController = bulletInstance.GetComponent<BulletController>();
 
-        bulletController.LaunchBullet(this.GetTrajectory());
+        if (this.hitCheck.success == true)
+        {
+            bulletController.Launch(this.hitCheck.hitInfo.point);
+        }
+        else
+        {
+            bulletController.Launch(this._defaultTarget.position);
+        }
     }
 
     private Vector3 GetTrajectory()
@@ -80,6 +127,22 @@ public class GunController : MonoBehaviour
         }
     
         return (targetPosition - this._seedSpawnPoint.position).normalized;
+    }
+
+    private void CastCameraRay()
+    {
+        Ray cameraRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        this.hitCheck = new RaycastHitCheck();
+
+
+        if (Physics.Raycast(cameraRay, out hitCheck.hitInfo, 100.0f, this._raycastLayer) == true)
+        {
+            this.hitCheck.success = true;
+        }
+        else
+        {
+            this.hitCheck.success = false;
+        }
     }
 
     /*

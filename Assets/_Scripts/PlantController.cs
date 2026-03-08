@@ -35,4 +35,48 @@ public class PlantController : MonoBehaviour
         .Join(budMoveTween)
         .Join(budGrowTween);
     }
+
+    public void DestroyPlant()
+    {
+        GameObject budObject = this._budTransform.gameObject;
+        GameObject stemObject = this._stemTransform.gameObject;
+
+        budObject.transform.parent = null;
+        stemObject.transform.parent = null;
+
+        budObject.layer = 0;
+        stemObject.layer = 0;
+
+        budObject.tag = "Untagged";
+        stemObject.tag = "Untagged";
+
+        Rigidbody budRb = budObject.AddComponent<Rigidbody>();
+        Rigidbody stemRb = stemObject.AddComponent<Rigidbody>();
+
+        budRb.useGravity = true;
+        stemRb.useGravity = true;
+
+        float randomMagnitude = Random.Range(10.0f, 50.0f);
+        Vector3 randomDirection = Random.onUnitSphere;
+
+        budRb.AddForce(randomDirection * randomMagnitude, ForceMode.Impulse);
+        
+        randomMagnitude = Random.Range(10.0f, 50.0f);
+        randomDirection = Random.onUnitSphere;
+
+        stemRb.AddForce(randomDirection * randomMagnitude, ForceMode.Impulse);
+
+
+
+        StartCoroutine(this.DestroyAfterDelay(budObject, stemObject));
+    }
+
+    private IEnumerator DestroyAfterDelay(GameObject budObject, GameObject stemObject)
+    {
+        yield return new WaitForSeconds(3.0f);
+
+        Destroy(budObject);
+        Destroy(stemObject);
+        Destroy(this.gameObject);
+    }
 }

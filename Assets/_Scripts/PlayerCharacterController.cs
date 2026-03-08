@@ -7,22 +7,24 @@ public class PlayerCharacterController : MonoBehaviour
 {
     private Transform _cameraTransform;
     private Rigidbody _playerRigidbody;
-    private Collider _playerCollider;
+
+    [SerializeField]
+    private Collider _playerFeetCollider;
 
     private Vector3 _moveDirection = Vector3.zero;
     private float _moveAcceleration = 5.0f;
-    private float _maxMoveVelocity = 30.0f;
+    private float _maxMoveVelocity = 15.0f;
     private Coroutine _moveLerpCoroutine = null;
     
     private Quaternion _targetRotation = Quaternion.identity;
-    private float _cameraRotateSpeed = 7.0f;
+    private float _cameraRotateSpeed = 15.0f;
     private Coroutine _cameraSlerpCoroutine = null;
 
 
     private float _isGroundedDistance = 0.1f;
     private float _maxFallVelocity = 300.0f;
     private float _maxVerticalAngle = 90.0f;
-    private float _jumpForce = 30.0f;
+    private float _jumpForce = 20.0f;
     private bool _jumpBuffered = false;
 
     private bool _isGroundedThisFrame = false;
@@ -31,8 +33,7 @@ public class PlayerCharacterController : MonoBehaviour
     private void Awake()
     {      
         this._cameraTransform = Camera.main.transform;
-        this._playerRigidbody = GetComponent<Rigidbody>();
-        this._playerCollider = GetComponentInChildren<Collider>();
+        this._playerRigidbody = GetComponent<Rigidbody>();        
     }
 
     private void Update()
@@ -89,19 +90,32 @@ public class PlayerCharacterController : MonoBehaviour
 
         this._targetRotation = yRotation * xRotation;
 
+        this._cameraTransform.rotation = this._targetRotation;
+        
         if (this._cameraSlerpCoroutine != null)
         {
             StopCoroutine(this._cameraSlerpCoroutine);
         }
 
         this._cameraSlerpCoroutine = StartCoroutine(this.SlerpToTargetRotation());
+        
     }
 
     private IEnumerator SlerpToTargetRotation()
     {
         while (this._cameraTransform.rotation != this._targetRotation)
         {
-            this._cameraTransform.rotation = Quaternion.Slerp(this._cameraTransform.rotation, this._targetRotation, this._cameraRotateSpeed * Time.fixedDeltaTime);
+            this._cameraTransform.rotation = Quaternion.Lerp(this._cameraTransform.rotation, this._targetRotation, this._cameraRotateSpeed * Time.fixedDeltaTime);
+
+            if (this._cameraTransform.rotation.eulerAngles.y > 360)
+            {
+                this._cameraTransform.rotation = Quaternion.Euler(this._cameraTransform.rotation.eulerAngles.x, (this._cameraTransform.rotation.eulerAngles.y - 360.0f), this._cameraTransform.rotation.eulerAngles.z);
+            }
+            else if (this._cameraTransform.rotation.eulerAngles.y < -360)
+            {
+                this._cameraTransform.rotation = Quaternion.Euler(this._cameraTransform.rotation.eulerAngles.x, (this._cameraTransform.rotation.eulerAngles.y + 360.0f), this._cameraTransform.rotation.eulerAngles.z);
+            }
+
             yield return new WaitForFixedUpdate();
         }
     }
@@ -179,11 +193,13 @@ public class PlayerCharacterController : MonoBehaviour
 
     private bool IsGrounded()
     {
-        float sphereCastMagnitude = this._playerCollider.bounds.extents.y + this._isGroundedDistance;
-        float sphereRadius = this._playerCollider.bounds.extents.x / 2.0f;
+        float sphereCastMagnitude = this._playerFeetCollider.bounds.extents.y + this._isGroundedDistance;
+        float sphereRadius = this._playerFeetCollider.bounds.extents.x / 2.0f;
         RaycastHit hitInfo;
 
-        if (Physics.SphereCast(this._playerCollider.transform.position, sphereRadius, Vector3.down, out hitInfo, sphereCastMagnitude) == true)
+        //Debug.DrawLine(this._playerFeetCollider.transform.position, this._playerFeetCollider.transform.position + (Vector3.down * sphereCastMagnitude), Color.red, 1.0f);
+
+        if (Physics.SphereCast(this._playerFeetCollider.transform.position, sphereRadius, Vector3.down, out hitInfo, sphereCastMagnitude) == true)
         {
             return true;
         }
@@ -195,46 +211,16 @@ public class PlayerCharacterController : MonoBehaviour
     {
         float bufferDistanceCheck = 2.0f;    
 
-        float sphereCastMagnitude = this._playerCollider.bounds.extents.y + bufferDistanceCheck;
-        float sphereRadius = this._playerCollider.bounds.extents.x / 2.0f;
+        float sphereCastMagnitude = this._playerFeetCollider.bounds.extents.y + bufferDistanceCheck;
+        float sphereRadius = this._playerFeetCollider.bounds.extents.x / 2.0f;
         RaycastHit hitInfo;
 
-        Debug.DrawLine(this._playerCollider.transform.position, this._playerCollider.transform.position + (Vector3.down * sphereCastMagnitude), Color.red, 1.0f);
 
-        if (Physics.SphereCast(this._playerCollider.transform.position, sphereRadius, Vector3.down, out hitInfo, sphereCastMagnitude) == true)
+        if (Physics.SphereCast(this._playerFeetCollider.transform.position, sphereRadius, Vector3.down, out hitInfo, sphereCastMagnitude) == true)
         {
             return true;
         }
 
         return false;
     }
-
-    /*
-    private void CapMaxVelocity()
-    {
-        //this.CapLateralVelocity();
-        //this.CapVerticalVelocity();
-    }
-
-    private void CapLateralVelocity()
-    {
-        Vector2 lateralVelocityVector = new Vector2(this._playerRigidbody.velocity.x, this._playerRigidbody.velocity.z);
-
-        if (lateralVelocityVector.magnitude > this._maxMoveVelocity)
-        {
-            lateralVelocityVector = lateralVelocityVector.normalized * this._maxMoveVelocity;
-
-            this._playerRigidbody.velocity = new Vector3(lateralVelocityVector.x, this._playerRigidbody.velocity.y, lateralVelocityVector.y);
-            Debug.LogError("Capping Lateral Velocity");
-        }
-    }
-
-    private void CapVerticalVelocity()
-    {
-        if (this._playerRigidbody.velocity.y < -this._maxFallVelocity)
-        {
-            this._playerRigidbody.velocity = new Vector3(this._playerRigidbody.velocity.x, -this._maxFallVelocity, this._playerRigidbody.velocity.z);
-        }
-    }
-     */
 }

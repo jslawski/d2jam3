@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3399106790139706654}
   - component: {fileID: -1239685915148550397}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plant
   m_TagString: Plant
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 8637280661174719106}
   - component: {fileID: 7436129327092852317}
   - component: {fileID: 2069505411515019938}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Stem
   m_TagString: Plant
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 9078686752234933242}
   - component: {fileID: 3745660903587141488}
   - component: {fileID: 415067725153504124}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bud
   m_TagString: Plant
   m_Icon: {fileID: 0}

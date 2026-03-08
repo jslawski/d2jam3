@@ -18,7 +18,7 @@ public class PlayerControlsManager : MonoBehaviour
     [HideInInspector]
     public bool shootAltInitiated = false;
 
-    private static float mouseSensitivity = 0.5f;
+    private static float mouseSensitivity = 0.25f;
 
     private void Awake()
     {
