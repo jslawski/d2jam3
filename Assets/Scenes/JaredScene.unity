@@ -1258,9 +1258,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7636da27e0690da4da500ed2f6909d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _seedPrefab: {fileID: 7070935138502568565, guid: 6a231da4519484f4da5ad024f22e32c4,
+  _seedPrefab: {fileID: 7070935138502568565, guid: 0d9c55690c9c79f4c8d4e7a9bd708ad0,
     type: 3}
-  _bulletPrefab: {fileID: 7070935138502568565, guid: 9146ee8efe870874f814a837a841eefc,
+  _bulletPrefab: {fileID: 7070935138502568565, guid: 6a231da4519484f4da5ad024f22e32c4,
     type: 3}
   _dynamicReticle: {fileID: 190062077}
   _seedSpawnPoint: {fileID: 716675830}

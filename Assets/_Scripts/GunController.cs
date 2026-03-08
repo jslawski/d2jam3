@@ -73,14 +73,29 @@ public class GunController : MonoBehaviour
         { 
             PlayerControlsManager.instance.shootInitiated = false;
 
-            this.ShootSeed();
+            this.ShootProjectile(this._seedPrefab);
         }
 
         if (PlayerControlsManager.instance.shootAltInitiated == true)
         {
             PlayerControlsManager.instance.shootAltInitiated = false;
 
-            this.ShootBullet();
+            this.ShootProjectile(this._bulletPrefab);
+        }
+    }
+
+    private void ShootProjectile(GameObject projectile)
+    {
+        GameObject projectileInstance = Instantiate(projectile, this._seedSpawnPoint.position, new Quaternion());
+        ProjectileController  projectileController = projectileInstance.GetComponent<ProjectileController>();
+
+        if (this.hitCheck.success == true)
+        {
+            projectileController.Launch(this.hitCheck.hitInfo.point);
+        }
+        else
+        {
+            projectileController.Launch(this._defaultTarget.position);
         }
     }
 

@@ -20,7 +20,7 @@ public class PlantController : MonoBehaviour
 
     protected Transform _parentTransform;
 
-    public void GrowPlant(Vector3 growthNormal, Transform parentTransform)
+    public virtual void GrowPlant(Vector3 growthNormal, Transform parentTransform)
     {
         this._parentTransform = parentTransform;    
 
@@ -49,7 +49,7 @@ public class PlantController : MonoBehaviour
         this.gameObject.transform.parent = this._parentTransform;
     }
 
-    public void DestroyPlant(bool softDestroy = false)
+    public virtual void DestroyPlant(bool softDestroy = false)
     {
         Transform[] plantParts = this.GetComponentsInChildren<Transform>();
 
