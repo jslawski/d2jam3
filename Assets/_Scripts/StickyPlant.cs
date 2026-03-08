@@ -6,10 +6,12 @@ public class StickyPlant : PlantController
     private GameObject _segmentPrefab;
 
     public int _currentSegments;
-    private int _maxSegments = 10;
+    private int _maxSegments = 100;
 
     [SerializeField]
     private List<StickyPlantSegment> _segments;
+    [SerializeField]
+    private LayerMask _raycastLayer;
 
     private bool _killGrowth = false;
 
@@ -52,17 +54,17 @@ public class StickyPlant : PlantController
 
             if (softDestroy == true)
             {
-                randomMagnitude = Random.Range(10.0f, 20.0f);
+                randomMagnitude = UnityEngine.Random.Range(10.0f, 20.0f);
 
-                float randomX = Random.Range(-0.3f, 0.3f);
-                float randomZ = Random.Range(-0.3f, 0.3f);
+                float randomX = UnityEngine.Random.Range(-0.3f, 0.3f);
+                float randomZ = UnityEngine.Random.Range(-0.3f, 0.3f);
 
                 randomDirection = new Vector3(randomX, -1, randomZ).normalized;
             }
             else
             {
-                randomMagnitude = Random.Range(10.0f, 50.0f);
-                randomDirection = Random.onUnitSphere;
+                randomMagnitude = UnityEngine.Random.Range(10.0f, 50.0f);
+                randomDirection = UnityEngine.Random.onUnitSphere;
             }
 
             plantRb.AddForce(randomDirection * randomMagnitude, ForceMode.Impulse);
@@ -77,9 +79,24 @@ public class StickyPlant : PlantController
         this._currentSegments++;
     }
 
-    public bool ShouldStopGrowing()
+    public bool ShouldStopGrowing(float distanceAhead)
+    {        
+
+        return (this._currentSegments >= this._maxSegments) || (this._killGrowth == true) || this.IsObstacleAhead(distanceAhead);
+    }
+
+    public bool IsObstacleAhead(float distanceAhead)
     {
-        return (this._currentSegments >= this._maxSegments) || (this._killGrowth == true);
+        Vector3 originPoint = this.transform.position;
+        float nextDistance = (this._segments.Count + 1) * distanceAhead;
+        Vector3 destinationPoint = originPoint + (this.gameObject.transform.forward * nextDistance);
+
+        if (Physics.Raycast(originPoint, this.gameObject.transform.forward, nextDistance, this._raycastLayer) == true)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public void StopGrowth()

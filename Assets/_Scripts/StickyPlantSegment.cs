@@ -8,7 +8,7 @@ public class StickyPlantSegment : MonoBehaviour
     private Transform _stemTransform;
 
     private float _timeToGrow = 0.1f;
-    private float _segmentLength = 3.0f;
+    private float _segmentLength = 1.0f;
 
     [SerializeField]
     private Transform _previousSegmentParent;
@@ -53,7 +53,7 @@ public class StickyPlantSegment : MonoBehaviour
     {
         this._stickyPlantController.IncrementSegmentCount();        
 
-        if (this._stickyPlantController.ShouldStopGrowing() == true)
+        if (this._stickyPlantController.ShouldStopGrowing(this._segmentLength) == true)
         {
             this._stickyPlantController.StopGrowth();
             return;

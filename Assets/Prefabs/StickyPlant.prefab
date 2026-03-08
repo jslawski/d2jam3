@@ -47,5 +47,8 @@ MonoBehaviour:
   _stemTransform: {fileID: 0}
   _budTransform: {fileID: 0}
   _budFinalScale: {x: 2.5, y: 2, z: 2.5}
-  _segmentPrefab: {fileID: 272436539018465319, guid: 9df4cf10fb01d6c49b2f1eb284e7dbae,
-    type: 3}
+  _currentSegments: 0
+  _segments: []
+  _raycastLayer:
+    serializedVersion: 2
+    m_Bits: 64
