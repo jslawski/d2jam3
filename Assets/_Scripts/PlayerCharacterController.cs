@@ -22,13 +22,11 @@ public class PlayerCharacterController : MonoBehaviour
 
 
     private float _isGroundedDistance = 0.1f;
-    private float _maxFallVelocity = 300.0f;
     private float _maxVerticalAngle = 90.0f;
     private float _jumpForce = 20.0f;
     private bool _jumpBuffered = false;
 
     private bool _isGroundedThisFrame = false;
-    private bool _pressedJumpThisFrame = false;
 
     private void Awake()
     {      
@@ -222,5 +220,31 @@ public class PlayerCharacterController : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {    
+        if (collision.gameObject.tag == "DirtPlant" || (collision.gameObject.tag == "Plantable" && collision.gameObject.layer == LayerMask.NameToLayer("Plant")))
+        {
+            //Transform parentTransform = this.GetTopParent(collision.gameObject.transform);
+            //parentTransform.gameObject.GetComponent<PlantController>().DestroyPlant();
+
+
+            collision.gameObject.transform.parent.gameObject.GetComponent<PlantController>().DestroyPlant(true);
+        }
+    }
+
+    private Transform GetTopParent(Transform initialTransform)
+    {
+        Transform currentParent = initialTransform;
+
+        while (currentParent.parent != null)
+        { 
+            currentParent = currentParent.parent;
+        }
+
+        Debug.LogError("Top Parent:" + currentParent.name);
+
+        return currentParent;
     }
 }

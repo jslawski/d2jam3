@@ -5,22 +5,27 @@ using DG.Tweening;
 public class PlantController : MonoBehaviour
 {
     [SerializeField]
-    private Transform _stemTransform;
+    protected Transform _stemTransform;
     [SerializeField]
-    private Transform _budTransform;
+    protected Transform _budTransform;
 
-    private float _plantMaxLength = 5.0f;
+    protected float _plantMaxLength = 5.0f;
 
-    private float _timeToGrow = 0.5f;
+    protected float _timeToGrow = 0.5f;
 
-    private float _timeToBud = 0.4f;
+    protected float _timeToBud = 0.4f;
 
-    private Vector3 _budFinalScale = new Vector3(2.5f, 2.0f, 2.5f);
+    [SerializeField]
+    protected Vector3 _budFinalScale = new Vector3(2.5f, 2.0f, 2.5f);
 
-    public void GrowPlant(Vector3 growthNormal)
+    protected Transform _parentTransform;
+
+    public void GrowPlant(Vector3 growthNormal, Transform parentTransform)
     {
+        this._parentTransform = parentTransform;    
+
         Vector3 stemFinalPosition = this._stemTransform.position + (growthNormal * (0.5f * this._plantMaxLength));
-        Vector3 budFinalPosition = this._stemTransform.position + (growthNormal * this._plantMaxLength);
+        Vector3 budFinalPosition = this._stemTransform.position + (growthNormal * this._plantMaxLength);        
 
         Sequence growSequence = DOTween.Sequence();
 
@@ -30,53 +35,62 @@ public class PlantController : MonoBehaviour
         Tweener budMoveTween = this._budTransform.DOMove(budFinalPosition, this._timeToGrow).SetEase(Ease.OutBack);
         Tweener budGrowTween = this._budTransform.DOScale(this._budFinalScale, this._timeToBud).SetEase(Ease.OutBack);
 
+        TweenCallback parentCallback = this.AttachToParent;
+
         growSequence.Append(stemGrowTween)
         .Join(stemMoveTween)
         .Join(budMoveTween)
-        .Join(budGrowTween);
+        .Join(budGrowTween)
+        .AppendCallback(parentCallback);
     }
 
-    public void DestroyPlant()
+    protected void AttachToParent()
     {
-        GameObject budObject = this._budTransform.gameObject;
-        GameObject stemObject = this._stemTransform.gameObject;
-
-        budObject.transform.parent = null;
-        stemObject.transform.parent = null;
-
-        budObject.layer = 0;
-        stemObject.layer = 0;
-
-        budObject.tag = "Untagged";
-        stemObject.tag = "Untagged";
-
-        Rigidbody budRb = budObject.AddComponent<Rigidbody>();
-        Rigidbody stemRb = stemObject.AddComponent<Rigidbody>();
-
-        budRb.useGravity = true;
-        stemRb.useGravity = true;
-
-        float randomMagnitude = Random.Range(10.0f, 50.0f);
-        Vector3 randomDirection = Random.onUnitSphere;
-
-        budRb.AddForce(randomDirection * randomMagnitude, ForceMode.Impulse);
-        
-        randomMagnitude = Random.Range(10.0f, 50.0f);
-        randomDirection = Random.onUnitSphere;
-
-        stemRb.AddForce(randomDirection * randomMagnitude, ForceMode.Impulse);
-
-
-
-        StartCoroutine(this.DestroyAfterDelay(budObject, stemObject));
+        this.gameObject.transform.parent = this._parentTransform;
     }
 
-    private IEnumerator DestroyAfterDelay(GameObject budObject, GameObject stemObject)
+    public void DestroyPlant(bool softDestroy = false)
+    {
+        Transform[] plantParts = this.GetComponentsInChildren<Transform>();
+
+        for (int i = 0; i < plantParts.Length; i++)
+        {
+            plantParts[i].parent = null;
+            plantParts[i].gameObject.layer = 0;
+            plantParts[i].gameObject.tag = "Untagged";
+            Rigidbody plantRb = plantParts[i].gameObject.AddComponent<Rigidbody>();
+            plantRb.useGravity = true;
+
+            float randomMagnitude;
+            Vector3 randomDirection;
+
+            if (softDestroy == true)
+            {
+                randomMagnitude = Random.Range(10.0f, 20.0f);
+
+                float randomX = Random.Range(-0.3f, 0.3f);
+                float randomZ = Random.Range(-0.3f, 0.3f);
+
+                randomDirection = new Vector3(randomX, -1, randomZ).normalized;
+            }
+            else
+            {
+                randomMagnitude = Random.Range(10.0f, 50.0f);
+                randomDirection = Random.onUnitSphere;
+            }
+
+            plantRb.AddForce(randomDirection * randomMagnitude, ForceMode.Impulse);
+            plantRb.AddTorque(randomDirection * randomMagnitude, ForceMode.Impulse);
+
+            StartCoroutine(this.DestroyAfterDelay(plantParts[i].gameObject));
+        }
+    }
+
+    protected IEnumerator DestroyAfterDelay(GameObject flowerObject)
     {
         yield return new WaitForSeconds(3.0f);
 
-        Destroy(budObject);
-        Destroy(stemObject);
+        Destroy(flowerObject);
         Destroy(this.gameObject);
     }
 }

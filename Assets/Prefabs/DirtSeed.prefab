@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -1245433393345109311}
   - component: {fileID: -5199623998507818058}
   m_Layer: 7
-  m_Name: Seed
+  m_Name: DirtSeed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileRigidbody: {fileID: -5199623998507818058}
   launchSpeed: 30
-  _plantPrefab: {fileID: 272436539018465319, guid: 5513e22f79435ed45bac9b951420fb5b,
+  _plantPrefab: {fileID: 272436539018465319, guid: 7f51e8eb01fa89b40b07391b988fc3a9,
     type: 3}
 --- !u!54 &-5199623998507818058
 Rigidbody:

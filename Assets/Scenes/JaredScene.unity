@@ -1258,7 +1258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7636da27e0690da4da500ed2f6909d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _seedPrefab: {fileID: 7070935138502568565, guid: 069de03df08c30b4395028879bebc72c,
+  _seedPrefab: {fileID: 7070935138502568565, guid: 6a231da4519484f4da5ad024f22e32c4,
     type: 3}
   _bulletPrefab: {fileID: 7070935138502568565, guid: 9146ee8efe870874f814a837a841eefc,
     type: 3}
@@ -1846,7 +1846,7 @@ GameObject:
   - component: {fileID: 901828339}
   m_Layer: 8
   m_Name: FeetCollider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3046,7 +3046,7 @@ GameObject:
   - component: {fileID: 1467940805}
   m_Layer: 8
   m_Name: PlayerCapsule
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

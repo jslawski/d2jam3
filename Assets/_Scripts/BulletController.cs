@@ -11,11 +11,17 @@ public class BulletController : ProjectileController
             Destroy(this.gameObject);
         }
 
-        if (collision.gameObject.tag == "Plant")
+        if (collision.gameObject.tag == "Plant" || collision.gameObject.tag == "DirtPlant")
         {
+            //collision.gameObject.GetComponent<PlantController>().DestroyPlant();
+            collision.gameObject.transform.parent.gameObject.GetComponent<PlantController>().DestroyPlant();                   
+            Destroy(this.gameObject);
+        }
+
+        if (collision.gameObject.tag == "Plantable" && collision.gameObject.layer == LayerMask.NameToLayer("Plant"))
+        {
+            //collision.gameObject.GetComponent<PlantController>().DestroyPlant();
             collision.gameObject.transform.parent.gameObject.GetComponent<PlantController>().DestroyPlant();
-        
-            //Destroy(collision.gameObject.transform.parent.gameObject);
             Destroy(this.gameObject);
         }
     }
