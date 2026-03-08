@@ -15,8 +15,10 @@ public class PlayerControlsManager : MonoBehaviour
     public bool jumpInitiated = false;
     [HideInInspector]
     public bool shootInitiated = false;
+    [HideInInspector]
+    public bool shootAltInitiated = false;
 
-    private float _mouseSensitivity = 0.5f;
+    private static float mouseSensitivity = 0.5f;
 
     private void Awake()
     {
@@ -36,6 +38,7 @@ public class PlayerControlsManager : MonoBehaviour
         this._playerControls.PlayerMap.Jump.canceled += this.CancelJump;
 
         this._playerControls.PlayerMap.Shoot.performed += this.ExecuteShoot;
+        this._playerControls.PlayerMap.ShootAlt.performed += this.ExecuteShootAlt;
     }
     private void OnEnable()
     {
@@ -51,7 +54,7 @@ public class PlayerControlsManager : MonoBehaviour
     {
         Vector2 mouseDelta = context.ReadValue<Vector2>();
         this.lookDelta = new Vector3(-mouseDelta.y, mouseDelta.x, 0.0f);
-        this.lookDelta *= this._mouseSensitivity;
+        this.lookDelta *= PlayerControlsManager.mouseSensitivity;
     }
 
     private void StopLookDirection(InputAction.CallbackContext context)
@@ -72,6 +75,11 @@ public class PlayerControlsManager : MonoBehaviour
     private void ExecuteShoot(InputAction.CallbackContext context)
     {        
         this.shootInitiated = true;
+    }
+
+    private void ExecuteShootAlt(InputAction.CallbackContext context)
+    {
+        this.shootAltInitiated = true;
     }
 
     public bool IsPressingForward()
@@ -102,5 +110,10 @@ public class PlayerControlsManager : MonoBehaviour
     public bool IsPressingShoot()
     {
         return this._playerControls.PlayerMap.Shoot.inProgress;
+    }
+
+    public void UpdateMouseSensitivity(float value)
+    {
+        PlayerControlsManager.mouseSensitivity = value;
     }
 }

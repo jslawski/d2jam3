@@ -8,6 +8,9 @@ public class GunController : MonoBehaviour
     private GameObject _seedPrefab;
 
     [SerializeField]
+    private GameObject _bulletPrefab;
+
+    [SerializeField]
     private Transform _seedSpawnPoint;
 
     [SerializeField]
@@ -39,6 +42,13 @@ public class GunController : MonoBehaviour
 
             this.ShootSeed();
         }
+
+        if (PlayerControlsManager.instance.shootAltInitiated == true)
+        {
+            PlayerControlsManager.instance.shootAltInitiated = false;
+
+            this.ShootBullet();
+        }
     }
 
     private void ShootSeed()
@@ -47,6 +57,14 @@ public class GunController : MonoBehaviour
         SeedController seedController = seedInstance.GetComponent<SeedController>();
 
         seedController.LaunchSeed(this.GetTrajectory());
+    }
+
+    private void ShootBullet()
+    {
+        GameObject bulletInstance = Instantiate(this._bulletPrefab, this._seedSpawnPoint.position, new Quaternion());
+        BulletController bulletController = bulletInstance.GetComponent<BulletController>();
+
+        bulletController.LaunchBullet(this.GetTrajectory());
     }
 
     private Vector3 GetTrajectory()

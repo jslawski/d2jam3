@@ -68,6 +68,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ShootAlt",
+                    "type": "Button",
+                    "id": "9357b085-710a-474c-98aa-7edcda2d8e9c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -145,6 +154,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d6d84913-2774-432b-a31c-e0ed8a528f17",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShootAlt",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

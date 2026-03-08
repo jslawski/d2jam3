@@ -154,6 +154,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShootAlt"",
+                    ""type"": ""Button"",
+                    ""id"": ""9357b085-710a-474c-98aa-7edcda2d8e9c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -233,6 +242,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6d84913-2774-432b-a31c-e0ed8a528f17"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShootAlt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -248,6 +268,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerMap_Look = m_PlayerMap.FindAction("Look", throwIfNotFound: true);
         m_PlayerMap_Shoot = m_PlayerMap.FindAction("Shoot", throwIfNotFound: true);
         m_PlayerMap_Jump = m_PlayerMap.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerMap_ShootAlt = m_PlayerMap.FindAction("ShootAlt", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -335,6 +356,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMap_Look;
     private readonly InputAction m_PlayerMap_Shoot;
     private readonly InputAction m_PlayerMap_Jump;
+    private readonly InputAction m_PlayerMap_ShootAlt;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerMap".
     /// </summary>
@@ -374,6 +396,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerMap/Jump".
         /// </summary>
         public InputAction @Jump => m_Wrapper.m_PlayerMap_Jump;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerMap/ShootAlt".
+        /// </summary>
+        public InputAction @ShootAlt => m_Wrapper.m_PlayerMap_ShootAlt;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -421,6 +447,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @ShootAlt.started += instance.OnShootAlt;
+            @ShootAlt.performed += instance.OnShootAlt;
+            @ShootAlt.canceled += instance.OnShootAlt;
         }
 
         /// <summary>
@@ -453,6 +482,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @ShootAlt.started -= instance.OnShootAlt;
+            @ShootAlt.performed -= instance.OnShootAlt;
+            @ShootAlt.canceled -= instance.OnShootAlt;
         }
 
         /// <summary>
@@ -542,5 +574,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnJump(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ShootAlt" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnShootAlt(InputAction.CallbackContext context);
     }
 }
