@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Plantable
   - Plant
+  - Seed
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - Water
   - UI
   - Plantable
-  - 
-  - 
+  - Seed
+  - Player
   - 
   - 
   - 

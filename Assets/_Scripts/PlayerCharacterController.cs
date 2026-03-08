@@ -10,22 +10,23 @@ public class PlayerCharacterController : MonoBehaviour
     private Collider _playerCollider;
 
     private Vector3 _moveDirection = Vector3.zero;
-
     private float _moveAcceleration = 5.0f;
     private float _maxMoveVelocity = 30.0f;
     private Coroutine _moveLerpCoroutine = null;
     
-    
-    private float _maxFallVelocity = 300.0f;
-    private float _maxVerticalAngle = 85.0f;
-
-    private float _jumpForce = 20.0f;
-
-    private bool _jumpBuffered = false;
-
     private Quaternion _targetRotation = Quaternion.identity;
     private float _cameraRotateSpeed = 7.0f;
     private Coroutine _cameraSlerpCoroutine = null;
+
+
+    private float _isGroundedDistance = 0.1f;
+    private float _maxFallVelocity = 300.0f;
+    private float _maxVerticalAngle = 90.0f;
+    private float _jumpForce = 30.0f;
+    private bool _jumpBuffered = false;
+
+    private bool _isGroundedThisFrame = false;
+    private bool _pressedJumpThisFrame = false;
 
     private void Awake()
     {      
@@ -38,18 +39,25 @@ public class PlayerCharacterController : MonoBehaviour
     {        
         this._moveDirection = this.GetLatestMoveDirection();
 
-        if (this.IsGrounded() == true)
+        this._isGroundedThisFrame = this.IsGrounded();
+
+        if (this._isGroundedThisFrame == true)
         {
             this._playerRigidbody.useGravity = false;
-            if (this._jumpBuffered == true)
-            {
-                PlayerControlsManager.instance.jumpInitiated = true;
-                this._jumpBuffered = false;
-            }
         }
         else
         {
             this._playerRigidbody.useGravity = true;
+
+            if (PlayerControlsManager.instance.jumpInitiated == true)
+            {
+                if (this.ShouldBufferJump() == true)
+                {
+                    this._jumpBuffered = true;
+                }
+
+                PlayerControlsManager.instance.jumpInitiated = false;
+            }
         }
     }
 
@@ -59,7 +67,6 @@ public class PlayerCharacterController : MonoBehaviour
         this.UpdateLateralVelocity();
         this.UpdateVerticalVelocity();               
     }
-
 
     private float GetClampedXAngle()
     {
@@ -127,26 +134,20 @@ public class PlayerCharacterController : MonoBehaviour
 
     private void UpdateVerticalVelocity()
     {
-        if (this.IsGrounded())
+        if (this._isGroundedThisFrame == true)
         {
-            this._playerRigidbody.velocity = new Vector3(this._playerRigidbody.velocity.x, 0.0f, this._playerRigidbody.velocity.z);
-
-            if (PlayerControlsManager.instance.jumpInitiated == true)
+            if (PlayerControlsManager.instance.jumpInitiated == true || this._jumpBuffered == true)
             {
                 this._playerRigidbody.useGravity = false;
-                this._playerRigidbody.AddForce(0.0f, this._jumpForce, 0.0f, ForceMode.Impulse);
-                PlayerControlsManager.instance.jumpInitiated = false;
-            }
-        }
-        else if (PlayerControlsManager.instance.jumpInitiated == true)
-        {
-            PlayerControlsManager.instance.jumpInitiated = false;
 
-            if (this.ShouldBufferJump() == true)
-            {
-                this._jumpBuffered = true;
+                this._playerRigidbody.velocity = new Vector3(this._playerRigidbody.velocity.x, this._jumpForce, this._playerRigidbody.velocity.z);
+                
+                //this._playerRigidbody.AddForce(0.0f, this._jumpForce, 0.0f, ForceMode.Impulse);                
             }
-        }        
+
+            PlayerControlsManager.instance.jumpInitiated = false;
+            this._jumpBuffered = false;
+        }
     }
 
     private Vector3 GetLatestMoveDirection()
@@ -178,25 +179,29 @@ public class PlayerCharacterController : MonoBehaviour
 
     private bool IsGrounded()
     {
-        float raycastMagnitude = this._playerCollider.bounds.extents.y + 0.1f;
-        float radius = this._playerCollider.bounds.extents.x - 0.1f;
+        float sphereCastMagnitude = this._playerCollider.bounds.extents.y + this._isGroundedDistance;
+        float sphereRadius = this._playerCollider.bounds.extents.x / 2.0f;
         RaycastHit hitInfo;
 
-        if (Physics.SphereCast(this._playerCollider.transform.position, radius, Vector3.down, out hitInfo, raycastMagnitude) == true)
+        if (Physics.SphereCast(this._playerCollider.transform.position, sphereRadius, Vector3.down, out hitInfo, sphereCastMagnitude) == true)
         {
             return true;
         }
-
+        
         return false;
     }
 
     private bool ShouldBufferJump()
     {
-        float raycastMagnitude = this._playerCollider.bounds.extents.y + 2.0f;
-        float radius = this._playerCollider.bounds.extents.x - 0.1f;
+        float bufferDistanceCheck = 2.0f;    
+
+        float sphereCastMagnitude = this._playerCollider.bounds.extents.y + bufferDistanceCheck;
+        float sphereRadius = this._playerCollider.bounds.extents.x / 2.0f;
         RaycastHit hitInfo;
 
-        if (Physics.SphereCast(this._playerCollider.transform.position, radius, Vector3.down, out hitInfo, raycastMagnitude) == true)
+        Debug.DrawLine(this._playerCollider.transform.position, this._playerCollider.transform.position + (Vector3.down * sphereCastMagnitude), Color.red, 1.0f);
+
+        if (Physics.SphereCast(this._playerCollider.transform.position, sphereRadius, Vector3.down, out hitInfo, sphereCastMagnitude) == true)
         {
             return true;
         }

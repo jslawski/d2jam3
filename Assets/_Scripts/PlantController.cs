@@ -24,15 +24,15 @@ public class PlantController : MonoBehaviour
 
         Sequence growSequence = DOTween.Sequence();
 
-        Tweener stemGrowTween = this._stemTransform.DOScaleZ(this._plantMaxLength, this._timeToGrow).SetEase(Ease.InOutBack);
-        Tweener stemMoveTween = this._stemTransform.DOMove(stemFinalPosition, this._timeToGrow).SetEase(Ease.InOutBack);
+        Tweener stemGrowTween = this._stemTransform.DOScaleZ(this._plantMaxLength, this._timeToGrow).SetEase(Ease.OutBack);
+        Tweener stemMoveTween = this._stemTransform.DOMove(stemFinalPosition, this._timeToGrow).SetEase(Ease.OutBack);
 
-        Tweener budMoveTween = this._budTransform.DOMove(budFinalPosition, this._timeToGrow).SetEase(Ease.InOutBack);
-        Tweener budGrowTween = this._budTransform.DOScale(this._budFinalScale, this._timeToBud).SetEase(Ease.InOutBack);
+        Tweener budMoveTween = this._budTransform.DOMove(budFinalPosition, this._timeToGrow).SetEase(Ease.OutBack);
+        Tweener budGrowTween = this._budTransform.DOScale(this._budFinalScale, this._timeToBud).SetEase(Ease.OutBack);
 
         growSequence.Append(stemGrowTween)
         .Join(stemMoveTween)
         .Join(budMoveTween)
-        .Append(budGrowTween);
+        .Join(budGrowTween);
     }
 }
