@@ -19,7 +19,7 @@ public class StickyPlantSegment : PlantController
 
     public void GrowSegment(StickyPlant stickyPlantController, Vector3 growthNormal, Transform parentTransform)
     {
-        this._timeToGrow = 1.1f;
+        this._timeToGrow = 0.1f;
 
         this._nextSegmentObject = Resources.Load<GameObject>("StickySegment");
         
@@ -27,10 +27,12 @@ public class StickyPlantSegment : PlantController
         this._growthNormal = growthNormal;
         this._previousSegmentParent = parentTransform;
 
-        Vector3 stemFinalPosition = this._stemTransform.position + (growthNormal * (0.5f * this._segmentLength));
+        Debug.LogError("GrowthNormal: " + growthNormal + " Magnitude: " + growthNormal.magnitude);
+
+        Vector3 stemFinalPosition = this._stemTransform.position + (growthNormal * this._segmentLength);
 
         this._newSegmentParent = this._stemTransform;
-        this._newSegmentStartPosition = stemFinalPosition + (growthNormal * (0.5f * this._segmentLength));
+        this._newSegmentStartPosition = stemFinalPosition + (growthNormal * this._segmentLength);
 
         DOTween.Sequence().Kill();
 
@@ -41,8 +43,8 @@ public class StickyPlantSegment : PlantController
 
         TweenCallback nextSegmentCallback = this.GrowNextVineSegment;
 
-        growSequence.Append(stemGrowTween)
-        .Join(stemMoveTween)
+        growSequence.Append(stemMoveTween)
+        .Join(stemGrowTween)
         .AppendCallback(nextSegmentCallback);        
     }
 
