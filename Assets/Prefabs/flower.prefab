@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8687946563647868181}
   m_Layer: 0
   m_Name: flowerHead
-  m_TagString: Untagged
+  m_TagString: Plant
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,7 +91,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2038491150892461095}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: d4806d1968517a44fa1999398752f3cd, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 6268504762081727719}
   m_Layer: 0
   m_Name: flowerStem
-  m_TagString: Untagged
+  m_TagString: Plant
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -196,7 +196,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4407950632199349434}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: d4806d1968517a44fa1999398752f3cd, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 2379195597790640811}
   m_Layer: 0
   m_Name: flower
-  m_TagString: Untagged
+  m_TagString: Plant
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -237,7 +237,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 55.165, y: 55.165, z: 55.165}
+  m_LocalScale: {x: 50, y: 50, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8000135217412775561}
@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 5222730512250852032}
   m_Layer: 0
   m_Name: flowerLeaves
-  m_TagString: Untagged
+  m_TagString: Plant
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

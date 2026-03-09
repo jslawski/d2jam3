@@ -32,6 +32,9 @@
         },
         {
             "m_Id": "6b2b36895fb54d92b8200d21f464dbee"
+        },
+        {
+            "m_Id": "3b51e7cb44fb44aab0d73de8927a4eb0"
         }
     ],
     "m_Keywords": [],
@@ -131,6 +134,9 @@
         },
         {
             "m_Id": "5ba62ad67ba340cdb460df3d2640a727"
+        },
+        {
+            "m_Id": "0045a8fe971e4930b432ed6c43df1fc7"
         }
     ],
     "m_GroupDatas": [],
@@ -590,6 +596,42 @@
             "m_Id": "cc157911c70e4f2984939044e6ccecf6"
         }
     ]
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "0045a8fe971e4930b432ed6c43df1fc7",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -3523.7978515625,
+            "y": 267.82635498046877,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "eaa762d2e9524e438d6c2d0b90756e57"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "3b51e7cb44fb44aab0d73de8927a4eb0"
+    }
 }
 
 {
@@ -1383,6 +1425,9 @@
         },
         {
             "m_Id": "6b2b36895fb54d92b8200d21f464dbee"
+        },
+        {
+            "m_Id": "3b51e7cb44fb44aab0d73de8927a4eb0"
         }
     ]
 }
@@ -1465,6 +1510,29 @@
         "x": 0.0,
         "y": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.BooleanShaderProperty",
+    "m_ObjectId": "3b51e7cb44fb44aab0d73de8927a4eb0",
+    "m_Guid": {
+        "m_GuidSerialized": "bb441f04-0ab3-4ec0-b59a-93cef020aaa8"
+    },
+    "m_Name": "TerrainCompatible",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "TerrainCompatible",
+    "m_DefaultReferenceName": "_TerrainCompatible",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": true
 }
 
 {
@@ -3946,6 +4014,20 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "VertexDescription.Position"
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.BooleanMaterialSlot",
+    "m_ObjectId": "eaa762d2e9524e438d6c2d0b90756e57",
+    "m_Id": 0,
+    "m_DisplayName": "TerrainCompatible",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": false,
+    "m_DefaultValue": false
 }
 
 {
