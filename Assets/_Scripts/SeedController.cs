@@ -9,6 +9,9 @@ public class SeedController : ProjectileController
 
     private float _timeToSpawnPlant = 0.3f;
 
+    [SerializeField]
+    private GameObject _flowerBurstParticlePrefab;
+
     private void OnCollisionEnter(Collision collision)
     {    
         if (collision.gameObject.tag == "Plantable")
@@ -20,12 +23,14 @@ public class SeedController : ProjectileController
 
             this.gameObject.transform.parent = this.GetTopLevelParent(collision.gameObject.transform);
 
+            Instantiate(this._flowerBurstParticlePrefab, this.gameObject.transform.position, new Quaternion());            
+
             StartCoroutine(this.SpawnPlant(collisionPoint, this.GetTopLevelParent(collision.gameObject.transform)));
 
             this.collisionFound = true;
         }
         else if (collision.gameObject.tag == "Plant" || collision.gameObject.tag == "DirtPlant")
-        {
+        {            
             Destroy(this.gameObject);
 
             this.collisionFound = true;
