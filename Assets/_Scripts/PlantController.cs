@@ -20,6 +20,8 @@ public class PlantController : MonoBehaviour
 
     protected Transform _parentTransform;
 
+    public bool isSticky = false;
+
     public virtual void GrowPlant(Vector3 growthNormal, Transform parentTransform)
     {
         this._parentTransform = parentTransform;    
@@ -29,8 +31,8 @@ public class PlantController : MonoBehaviour
 
         Sequence growSequence = DOTween.Sequence();
 
-        Tweener stemGrowTween = this._stemTransform.DOScaleZ(this._plantMaxLength, this._timeToGrow).SetEase(Ease.OutBack);
-        Tweener stemMoveTween = this._stemTransform.DOMove(stemFinalPosition, this._timeToGrow).SetEase(Ease.OutBack);
+        Tweener stemGrowTween = this._stemTransform.DOScaleY(this._plantMaxLength, this._timeToGrow).SetEase(Ease.OutBack);
+        Tweener stemMoveTween = this._stemTransform.DOMove(stemFinalPosition, this._timeToGrow).SetEase(Ease.OutBack);        
 
         Tweener budMoveTween = this._budTransform.DOMove(budFinalPosition, this._timeToGrow).SetEase(Ease.OutBack);
         Tweener budGrowTween = this._budTransform.DOScale(this._budFinalScale, this._timeToBud).SetEase(Ease.OutBack);
@@ -46,7 +48,10 @@ public class PlantController : MonoBehaviour
 
     protected void AttachToParent()
     {
-        this.gameObject.transform.parent = this._parentTransform;
+        if (this._parentTransform.gameObject.layer == LayerMask.NameToLayer("Plant"))
+        {
+            this.gameObject.transform.parent = this._parentTransform;
+        }            
     }
 
     public virtual void DestroyPlant(bool softDestroy = false)
@@ -58,6 +63,7 @@ public class PlantController : MonoBehaviour
             plantParts[i].parent = null;
             plantParts[i].gameObject.layer = 0;
             plantParts[i].gameObject.tag = "Untagged";
+            plantParts[i].gameObject.layer = LayerMask.NameToLayer("Destroyed");
             Rigidbody plantRb = plantParts[i].gameObject.AddComponent<Rigidbody>();
             plantRb.useGravity = true;
 

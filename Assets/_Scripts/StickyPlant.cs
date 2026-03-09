@@ -6,7 +6,7 @@ public class StickyPlant : PlantController
     private GameObject _segmentPrefab;
 
     public int _currentSegments;
-    private int _maxSegments = 100;
+    private int _maxSegments = 20;
 
     [SerializeField]
     private List<StickyPlantSegment> _segments;
@@ -17,7 +17,7 @@ public class StickyPlant : PlantController
 
     public override void GrowPlant(Vector3 growthNormal, Transform parentTransform)
     {
-        this._segmentPrefab = Resources.Load<GameObject>("StickyPlantSegment");
+        this._segmentPrefab = Resources.Load<GameObject>("StickySegment");
     
         this._timeToGrow = 0.2f;
         this._parentTransform = parentTransform;
@@ -25,7 +25,7 @@ public class StickyPlant : PlantController
         this._segments = new List<StickyPlantSegment>();
 
         GameObject nextSegment = Instantiate(this._segmentPrefab, this.gameObject.transform.position, new Quaternion());
-        nextSegment.transform.forward = growthNormal;
+        nextSegment.transform.up = growthNormal;
         nextSegment.name = "Segment" + this._currentSegments.ToString();
 
         StickyPlantSegment stickyPlantSegment = nextSegment.GetComponent<StickyPlantSegment>();
@@ -37,8 +37,8 @@ public class StickyPlant : PlantController
 
     public override void DestroyPlant(bool softDestroy = false)
     {
-        this.LinkUpCurrentSegments();
-    
+        this.StopGrowth();
+
         Transform[] plantParts = this.GetComponentsInChildren<Transform>();
 
         for (int i = 0; i < plantParts.Length; i++)
@@ -46,6 +46,7 @@ public class StickyPlant : PlantController
             plantParts[i].parent = null;
             plantParts[i].gameObject.layer = 0;
             plantParts[i].gameObject.tag = "Untagged";
+            plantParts[i].gameObject.layer = LayerMask.NameToLayer("Destroyed");
             Rigidbody plantRb = plantParts[i].gameObject.AddComponent<Rigidbody>();
             plantRb.useGravity = true;
 
@@ -81,7 +82,6 @@ public class StickyPlant : PlantController
 
     public bool ShouldStopGrowing(float distanceAhead)
     {        
-
         return (this._currentSegments >= this._maxSegments) || (this._killGrowth == true) || this.IsObstacleAhead(distanceAhead);
     }
 
@@ -89,9 +89,9 @@ public class StickyPlant : PlantController
     {
         Vector3 originPoint = this.transform.position;
         float nextDistance = (this._segments.Count + 1) * distanceAhead;
-        Vector3 destinationPoint = originPoint + (this.gameObject.transform.forward * nextDistance);
+        Vector3 destinationPoint = originPoint + (this.gameObject.transform.up * nextDistance);
 
-        if (Physics.Raycast(originPoint, this.gameObject.transform.forward, nextDistance, this._raycastLayer) == true)
+        if (Physics.Raycast(originPoint, this.gameObject.transform.up, nextDistance, this._raycastLayer) == true)
         {
             return true;
         }

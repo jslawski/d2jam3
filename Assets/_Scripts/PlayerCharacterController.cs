@@ -24,9 +24,15 @@ public class PlayerCharacterController : MonoBehaviour
     private float _isGroundedDistance = 0.1f;
     private float _maxVerticalAngle = 90.0f;
     private float _jumpForce = 20.0f;
+    private float _unstickJumpForce = 40.0f;
     private bool _jumpBuffered = false;
 
     private bool _isGroundedThisFrame = false;
+
+    private Vector3 _stuckJumpNormal = Vector3.zero;
+    private Vector3 _stuckMoveDirection = Vector3.zero;
+
+    public GunController gunController;
 
     private void Awake()
     {      
@@ -44,7 +50,7 @@ public class PlayerCharacterController : MonoBehaviour
         {
             this._playerRigidbody.useGravity = false;
         }
-        else
+        else if (this._stuckJumpNormal == Vector3.zero)
         {
             this._playerRigidbody.useGravity = true;
 
@@ -58,13 +64,23 @@ public class PlayerCharacterController : MonoBehaviour
                 PlayerControlsManager.instance.jumpInitiated = false;
             }
         }
+
+        //Debug.LogError("Stuck? " + (this._stuckNormal != Vector3.zero) + "Use Gravity?" + this._playerRigidbody.useGravity);
     }
 
     private void FixedUpdate()
     {
         this.UpdateCameraRotation();
-        this.UpdateLateralVelocity();
-        this.UpdateVerticalVelocity();               
+
+        if (this._stuckJumpNormal == Vector3.zero)
+        {
+            this.UpdateLateralVelocity();
+            this.UpdateVerticalVelocity();
+        }
+        else
+        {
+            this.UpdateStuckPosition();
+        }
     }
 
     private float GetClampedXAngle()
@@ -199,7 +215,15 @@ public class PlayerCharacterController : MonoBehaviour
 
         if (Physics.SphereCast(this._playerFeetCollider.transform.position, sphereRadius, Vector3.down, out hitInfo, sphereCastMagnitude) == true)
         {
-            return true;
+            if (hitInfo.collider.gameObject.tag == "DirtPlant" || (hitInfo.collider.gameObject.tag == "Plantable" && hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Plant")))
+            {
+                this._jumpBuffered = false;
+                return false;
+            }
+            else
+            {
+                return true;
+            }            
         }
         
         return false;
@@ -222,15 +246,144 @@ public class PlayerCharacterController : MonoBehaviour
         return false;
     }
 
+    private void UpdateStuckPosition()
+    {
+        //Debug.DrawLine(this.gameObject.transform.position, this.gameObject.transform.position + (this._stuckMoveDirection * 5.0f), Color.red);
+
+        if (PlayerControlsManager.instance.jumpInitiated == true)
+        {        
+            PlayerControlsManager.instance.jumpInitiated = false;
+            this._jumpBuffered = false;
+
+            this._playerRigidbody.useGravity = false;
+
+            /*
+            float XForce = this._stuckJumpNormal.x * this._jumpForce * 3.0f;
+            float YForce = 0.75f * this._jumpForce;
+            float ZForce = this._stuckJumpNormal.z * this._jumpForce * 3.0f;
+            */
+
+            Vector3 unstuckJumpVector = new Vector3(Camera.main.transform.forward.x * this._unstickJumpForce, 
+                                                Vector3.up.y * this._jumpForce, 
+                                                Camera.main.transform.forward.z * this._unstickJumpForce);
+
+            Debug.LogError("Launch Vector: " + unstuckJumpVector);
+
+            this._playerRigidbody.velocity = unstuckJumpVector;
+
+            this.UnstickPlayer();            
+        }
+        else
+        {
+            Vector3 stuckVelocity = Vector3.zero;
+
+            float dotProduct = Vector3.Dot(this._stuckMoveDirection, Camera.main.transform.forward);
+
+            if (PlayerControlsManager.instance.IsPressingForward() == true)
+            {
+                if (dotProduct > 0)
+                {
+                    stuckVelocity = this._stuckMoveDirection * this._maxMoveVelocity;
+                }
+                else 
+                {
+                    stuckVelocity = -this._stuckMoveDirection * this._maxMoveVelocity;
+                }
+            }
+            if (PlayerControlsManager.instance.IsPressingBack() == true)
+            {
+                if (dotProduct > 0)
+                {
+                    stuckVelocity = -this._stuckMoveDirection * this._maxMoveVelocity;
+                }
+                else
+                {
+                    stuckVelocity = this._stuckMoveDirection * this._maxMoveVelocity;
+                }
+            }            
+
+            if (this._moveLerpCoroutine != null)
+            {
+                StopCoroutine(this._moveLerpCoroutine);
+            }
+
+            this._moveLerpCoroutine = StartCoroutine(this.LerpToStuckVelocity(stuckVelocity));
+        }
+    }
+
+    private IEnumerator LerpToStuckVelocity(Vector3 stuckVelocity)
+    {
+        int iteration = 0;
+
+        while (this._playerRigidbody.velocity != stuckVelocity)
+        {
+            this._playerRigidbody.velocity = Vector3.Lerp(this._playerRigidbody.velocity, stuckVelocity, this._moveAcceleration * Time.fixedDeltaTime);
+            yield return new WaitForFixedUpdate();
+            iteration++;
+        }
+
+        this._playerRigidbody.velocity = stuckVelocity;
+    }
+
     private void OnCollisionEnter(Collision collision)
-    {    
+    {
+        if (collision.gameObject.tag == "Plantable" && this._stuckJumpNormal != Vector3.zero)
+        {
+            this.UnstickPlayer();
+        }
+    
         if (collision.gameObject.tag == "DirtPlant" || (collision.gameObject.tag == "Plantable" && collision.gameObject.layer == LayerMask.NameToLayer("Plant")))
         {
-            //Transform parentTransform = this.GetTopParent(collision.gameObject.transform);
-            //parentTransform.gameObject.GetComponent<PlantController>().DestroyPlant();
+            this.GetTopParent(collision.gameObject.transform).GetComponent<PlantController>().DestroyPlant(true);
+        }
+        else if (collision.gameObject.tag == "Plant")
+        {
+            Transform plantParent = this.GetTopParent(collision.gameObject.transform);
+        
+            if (plantParent.gameObject.GetComponent<PlantController>().isSticky == true)
+            {
+                this.StickPlayer(plantParent, collision);
+            }
+        }
+    }
 
+    /*
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "Plant")
+        {
+            Transform plantParent = this.GetTopParent(collision.gameObject.transform);
 
-            collision.gameObject.transform.parent.gameObject.GetComponent<PlantController>().DestroyPlant(true);
+            if (plantParent.gameObject.GetComponent<PlantController>().isSticky == true)
+            {
+                this.UnstickPlayer();
+            }
+        }
+    }
+    */
+    private void StickPlayer(Transform parentTransform, Collision collision)
+    {
+        this.gameObject.transform.parent = parentTransform;
+        this._stuckJumpNormal = collision.contacts[0].normal;
+        this._stuckMoveDirection = collision.gameObject.transform.up;
+        this._playerRigidbody.useGravity = false;
+        this._playerRigidbody.velocity = Vector3.zero;
+
+        if (this._moveLerpCoroutine != null)
+        {
+            StopCoroutine(this._moveLerpCoroutine);
+        }
+    }
+
+    private void UnstickPlayer()
+    {
+        this.gameObject.transform.parent = null;
+
+        this._stuckJumpNormal = Vector3.zero;
+
+        if (this._moveLerpCoroutine != null)
+        {
+            StopCoroutine(this._moveLerpCoroutine);
         }
     }
 
@@ -238,12 +391,15 @@ public class PlayerCharacterController : MonoBehaviour
     {
         Transform currentParent = initialTransform;
 
-        while (currentParent.parent != null)
+        while ((currentParent.parent != null))
         { 
             currentParent = currentParent.parent;
-        }
 
-        Debug.LogError("Top Parent:" + currentParent.name);
+            if (currentParent.name.Contains("Plant"))
+            {
+                break;
+            }
+        }
 
         return currentParent;
     }

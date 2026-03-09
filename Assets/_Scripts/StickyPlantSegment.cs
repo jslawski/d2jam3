@@ -1,13 +1,10 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class StickyPlantSegment : MonoBehaviour
+public class StickyPlantSegment : PlantController
 {
     private GameObject _nextSegmentObject;
-    [SerializeField]
-    private Transform _stemTransform;
 
-    private float _timeToGrow = 0.1f;
     private float _segmentLength = 1.0f;
 
     [SerializeField]
@@ -22,9 +19,9 @@ public class StickyPlantSegment : MonoBehaviour
 
     public void GrowSegment(StickyPlant stickyPlantController, Vector3 growthNormal, Transform parentTransform)
     {
-        this._nextSegmentObject = Resources.Load<GameObject>("StickyPlantSegment");
+        this._timeToGrow = 0.1f;
 
-        this._stemTransform.localScale = new Vector3(1.0f, 1.0f, 0.1f);
+        this._nextSegmentObject = Resources.Load<GameObject>("StickySegment");
         
         this._stickyPlantController = stickyPlantController;
         this._growthNormal = growthNormal;
@@ -39,7 +36,7 @@ public class StickyPlantSegment : MonoBehaviour
 
         Sequence growSequence = DOTween.Sequence();
 
-        Tweener stemGrowTween = this._stemTransform.DOScaleZ(this._segmentLength, this._timeToGrow).SetEase(Ease.Linear);
+        Tweener stemGrowTween = this._stemTransform.DOScaleY(this._segmentLength, this._timeToGrow).SetEase(Ease.Linear);
         Tweener stemMoveTween = this._stemTransform.DOMove(stemFinalPosition, this._timeToGrow).SetEase(Ease.Linear);
 
         TweenCallback nextSegmentCallback = this.GrowNextVineSegment;
@@ -61,7 +58,7 @@ public class StickyPlantSegment : MonoBehaviour
         else 
         {
             GameObject nextSegment = Instantiate(this._nextSegmentObject, this._newSegmentStartPosition, new Quaternion());            
-            nextSegment.transform.forward = this._growthNormal;
+            nextSegment.transform.up = this._growthNormal;
             nextSegment.name = "Segment" + this._stickyPlantController._currentSegments.ToString();
 
             StickyPlantSegment stickyPlantSegment = nextSegment.GetComponent<StickyPlantSegment>();
@@ -75,5 +72,10 @@ public class StickyPlantSegment : MonoBehaviour
     public void AttachToPreviousSegment()
     {    
         this.gameObject.transform.parent = this._previousSegmentParent;
+    }
+
+    public override void DestroyPlant(bool softDestroy = false)
+    {
+        this._stickyPlantController.DestroyPlant();
     }
 }

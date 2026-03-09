@@ -10,20 +10,22 @@ public class ProjectileController : MonoBehaviour
 
     protected float expiryTime = 5.0f;
 
-    public void Launch(Vector3 destinationPoint)
+    public bool collisionFound = false;
+
+    public void Launch(Vector3 destinationPoint, Vector3 defaultTargetPosition)
     {
-        StartCoroutine(this.MoveProjectile(destinationPoint));
+        StartCoroutine(this.MoveProjectile(destinationPoint, defaultTargetPosition));
     
         StartCoroutine(this.ExpireAfterTime());
     }
 
-    protected IEnumerator MoveProjectile(Vector3 destinationPoint)
+    protected IEnumerator MoveProjectile(Vector3 destinationPoint, Vector3 defaultTargetPosition)
     {
         Vector3 startingPoint = this.projectileRigidbody.position;
 
         int safetyIncrements = 100;
 
-        while (Vector3.Distance(startingPoint, destinationPoint) <= 0.1f || safetyIncrements > 0)
+        while (Vector3.Distance(startingPoint, destinationPoint) <= 0.01f || safetyIncrements > 0)
         {
             this.projectileRigidbody.position = Vector3.Lerp(this.projectileRigidbody.position, destinationPoint, this.launchSpeed * Time.fixedDeltaTime);
             safetyIncrements--;
