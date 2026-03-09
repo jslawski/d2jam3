@@ -33,8 +33,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: chromaticGoal
-  m_Shader: {fileID: -6465566751694194690, guid: fa64fba980ba1fe44ad522ef396d9376, type: 3}
+  m_Name: dirtPickup
+  m_Shader: {fileID: -6465566751694194690, guid: fa64fba980ba1fe44ad522ef396d9376,
+    type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -98,15 +99,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _mainTexture:
-        m_Texture: {fileID: 2800000, guid: 1d0ff94ace6f87747a3074639c61173d, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _mask:
-        m_Texture: {fileID: 2800000, guid: 8f444f2dcdc81d84b8feb4a438a30c32, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7dc07475f0410a843b1906be629704b3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _staticMask:
-        m_Texture: {fileID: 2800000, guid: beb304bd19f24a442836be88453e284e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0e7f8b7c0972d3843a5a51c03eb669b2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texture:
@@ -167,8 +168,8 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _alpha: 0.07
-    - _chromaticStrength: 0.422
+    - _alpha: 1
+    - _chromaticStrength: 0.34
     - _dissolvePower: 1.76
     - _dissolveScale: 6.87
     - _dissolveSpeed: 5.88
@@ -193,10 +194,10 @@ Material:
     - _color2: {r: 0, g: 0.038110673, b: 0.9528302, a: 1}
     - _dissolveSpeed: {r: 0, g: -0.5, b: 0, a: 0}
     - _distortionScrollSpeed: {r: 0, g: -0.12, b: 0, a: 0}
-    - _emission: {r: 33.89676, g: 33.89676, b: 33.89676, a: 1}
-    - _maskScrollSpeed: {r: 0, g: 0, b: 0, a: 0}
-    - _maskTilingOffset: {r: 1, g: 0.64, b: 0, a: 0.06}
-    - _scrollSpeed: {r: 0, g: 0.5, b: 0, a: 0}
+    - _emission: {r: 31.999996, g: 5.9727798, b: 0, a: 1}
+    - _maskScrollSpeed: {r: 0, g: -0.1, b: 0, a: 0}
+    - _maskTilingOffset: {r: 2, g: 1.19, b: 0, a: 0.06}
+    - _scrollSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _textureOffset: {r: 0, g: 0, b: 0, a: 0}
     - _textureTiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

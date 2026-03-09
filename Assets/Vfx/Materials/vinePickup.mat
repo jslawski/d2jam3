@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5010686263920100936
+--- !u!114 &-8844398649911816163
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -33,7 +33,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Heart
+  m_Name: vinePickup
   m_Shader: {fileID: -6465566751694194690, guid: fa64fba980ba1fe44ad522ef396d9376,
     type: 3}
   m_Parent: {fileID: 0}
@@ -99,15 +99,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _mainTexture:
-        m_Texture: {fileID: 2800000, guid: 54fdda7c7dbe6a94682972a45bd9df70, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _mask:
-        m_Texture: {fileID: 2800000, guid: 54fdda7c7dbe6a94682972a45bd9df70, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7dc07475f0410a843b1906be629704b3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _staticMask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 0e7f8b7c0972d3843a5a51c03eb669b2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texture:
@@ -169,7 +169,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _alpha: 1
-    - _chromaticStrength: 1
+    - _chromaticStrength: 0.34
     - _dissolvePower: 1.76
     - _dissolveScale: 6.87
     - _dissolveSpeed: 5.88
@@ -189,14 +189,14 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _Texture_TilingOffset: {r: 1, g: 1, b: 0, a: 0}
+    - _Texture_TilingOffset: {r: 2, g: 0.21, b: 0, a: 0}
     - _color: {r: 0, g: 7.4642644, b: 2.5011144, a: 1}
     - _color2: {r: 0, g: 0.038110673, b: 0.9528302, a: 1}
     - _dissolveSpeed: {r: 0, g: -0.5, b: 0, a: 0}
     - _distortionScrollSpeed: {r: 0, g: -0.12, b: 0, a: 0}
-    - _emission: {r: 675.5879, g: 675.5879, b: 675.5879, a: 1}
-    - _maskScrollSpeed: {r: 0, g: 0, b: 0, a: 0}
-    - _maskTilingOffset: {r: 1, g: 1, b: 0, a: 0}
+    - _emission: {r: 0, g: 14.908843, b: 31.999996, a: 1}
+    - _maskScrollSpeed: {r: 0, g: -0.1, b: 0, a: 0}
+    - _maskTilingOffset: {r: 2, g: 1.19, b: 0, a: 0.06}
     - _scrollSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _textureOffset: {r: 0, g: 0, b: 0, a: 0}
     - _textureTiling: {r: 1, g: 1, b: 0, a: 0}
