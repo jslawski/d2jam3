@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3399106790139706654}
-  - component: {fileID: 3280238689332238758}
+  - component: {fileID: 1107878090983585847}
   m_Layer: 3
   m_Name: DirtPlant
   m_TagString: Plant
@@ -32,9 +32,10 @@ Transform:
   m_Children:
   - {fileID: 2009946879174264093}
   - {fileID: 7892847142272825699}
+  - {fileID: 554441551472814689}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3280238689332238758
+--- !u!114 &1107878090983585847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,13 +44,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 272436539018465319}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e443c9f4dfa90504d906d0a38b8abf6f, type: 3}
+  m_Script: {fileID: 11500000, guid: 227392f47096c4d46bd483f429bea133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stemTransform: {fileID: 7892847142272825699}
-  _budTransform: {fileID: 2009946879174264093}
-  _budFinalScale: {x: 3, y: 3, z: 3}
+  _stemTransform: {fileID: 0}
+  _budTransform: {fileID: 0}
+  _budFinalScale: {x: 2.5, y: 2, z: 2.5}
   isSticky: 0
+  stuckObject: {fileID: 0}
+  _flowerBudTransform: {fileID: 5817183367103001035}
 --- !u!1 &5978531781542875009
 GameObject:
   m_ObjectHideFlags: 0
@@ -68,7 +71,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7892847142272825699
 Transform:
   m_ObjectHideFlags: 0
@@ -173,7 +176,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2009946879174264093
 Transform:
   m_ObjectHideFlags: 0
@@ -260,3 +263,118 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &4592820479295172418
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3399106790139706654}
+    m_Modifications:
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6268504762081727719, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6268504762081727719, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6376314416841771995, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_Name
+      value: dirtFlower
+      objectReference: {fileID: 0}
+    - target: {fileID: 8906592492672131747, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8906592492672131747, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+        type: 3}
+      propertyPath: m_TagString
+      value: Plantable
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cc6b3cbd7d4f1a8449245eecf0181492, type: 3}
+--- !u!4 &554441551472814689 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4038950700049745187, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+    type: 3}
+  m_PrefabInstance: {fileID: 4592820479295172418}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5817183367103001035 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8000135217412775561, guid: cc6b3cbd7d4f1a8449245eecf0181492,
+    type: 3}
+  m_PrefabInstance: {fileID: 4592820479295172418}
+  m_PrefabAsset: {fileID: 0}

@@ -57,7 +57,14 @@ public class SeedController : ProjectileController
         while ((currentParent.parent != null))
         {
             currentParent = currentParent.parent;
+
+            if (currentParent.name.Contains("Plant"))
+            {
+                break;
+            }
         }
+
+        Debug.LogError("Selected Parent: " + currentParent.gameObject.name);
 
         return currentParent;
     }
