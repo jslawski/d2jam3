@@ -77,7 +77,8 @@ Material:
     m_Floats:
     - _Brightness: 0.076
     - _Dither_Scale: 0
-    - _Fresnel_Power: 4.94
+    - _End_Position: 6.28
+    - _Fresnel_Power: 4.65
     - _Grass_Blend: 3.8
     - _Grass_Tile: 0.15
     - _Grid_Thickness: 0.88
@@ -92,13 +93,14 @@ Material:
     - _Rotation: -1.1
     - _Scroll_Speed: 0
     - _Shadow_Opacity: 1
+    - _Start_Position: 0
     - _Strength: 1
     - _Tightness: 50.74
     - _add: 0.58
     - _mult: 0.34
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0}
-    - _Fresnel_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Fresnel_Color: {r: 0.77933526, g: 1, b: 0, a: 1}
     - _Grass_Color: {r: 1.1212192, g: 1.4552968, b: 1.2240121, a: 1}
     - _Grid_Color: {r: 0, g: 0, b: 0, a: 0}
     - _Grid_Tiling: {r: 1, g: 1, b: 0, a: 0}
