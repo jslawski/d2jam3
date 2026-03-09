@@ -16582,6 +16582,94 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d8eee3ff9711194c9a5264a0ef63cc0, type: 3}
+--- !u!1001 &1974217655
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 188.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -30.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153742521482288160, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295669785831884412, guid: e6a112158e3ccd84a988784e75f2be21,
+        type: 3}
+      propertyPath: m_Name
+      value: flowerGunPickup (6)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e6a112158e3ccd84a988784e75f2be21, type: 3}
 --- !u!1001 &1992221662
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17264,6 +17352,7 @@ SceneRoots:
   - {fileID: 1091791891}
   - {fileID: 739718271}
   - {fileID: 431373755}
+  - {fileID: 1974217655}
   - {fileID: 1406235733}
   - {fileID: 1992221662}
   - {fileID: 746243266}
