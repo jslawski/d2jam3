@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KillPlane : MonoBehaviour
@@ -8,7 +6,7 @@ public class KillPlane : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            SceneLoader.instance.LoadScene("MainScene");
+            GameManager.instance.LoadCheckpoint();            
         }
     }
 }

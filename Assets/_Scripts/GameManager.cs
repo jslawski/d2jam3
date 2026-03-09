@@ -11,6 +11,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private ResultScreen _resultScreen;
 
+    [SerializeField]
+    private GameObject playerCharacter;
+
+    private Vector3 respawnPoint = Vector3.zero;
+
     private void Awake()
     {
         if (instance == null)
@@ -47,5 +52,15 @@ public class GameManager : MonoBehaviour
         PlayerControlsManager.instance.enabled = false;
 
         Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void SaveCheckpoint(Vector3 respawnPoint)
+    {
+        this.respawnPoint = respawnPoint;
+    }
+
+    public void LoadCheckpoint()
+    {
+        this.playerCharacter.transform.position = this.respawnPoint;
     }
 }
