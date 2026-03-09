@@ -155,6 +155,7 @@ MonoBehaviour:
   _annoucement: {fileID: 8300000, guid: c2486177462da25438b0a132419e58cb, type: 3}
   _pickupParticleObject: {fileID: 7502642419937719852, guid: 8418d2a74a5055f4dbf5d8d9e70f87fe,
     type: 3}
+  _ammoType: 2
 --- !u!1 &1232114072802113585
 GameObject:
   m_ObjectHideFlags: 0

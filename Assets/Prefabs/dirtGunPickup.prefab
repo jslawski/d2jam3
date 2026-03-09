@@ -556,6 +556,7 @@ MonoBehaviour:
   _annoucement: {fileID: 8300000, guid: 03fb8d25412c305459f529d75d62ad57, type: 3}
   _pickupParticleObject: {fileID: 7502642419937719852, guid: 8418d2a74a5055f4dbf5d8d9e70f87fe,
     type: 3}
+  _ammoType: 1
 --- !u!1001 &5367307349860629416
 PrefabInstance:
   m_ObjectHideFlags: 0

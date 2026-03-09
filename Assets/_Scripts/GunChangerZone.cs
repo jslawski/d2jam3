@@ -13,6 +13,9 @@ public class GunChangerZone : MonoBehaviour
     [SerializeField]
     private GameObject _pickupParticleObject;
 
+    [SerializeField]
+    private AmmoType _ammoType;
+
     private void OnTriggerEnter(Collider other)
     {        
         if (other.tag == "Player")
@@ -27,6 +30,8 @@ public class GunChangerZone : MonoBehaviour
                 AudioManager.instance.Play(this._annoucement, channelSettings);
 
                 Instantiate(this._pickupParticleObject, this.gameObject.transform.position, new Quaternion());
+
+                AmmoImage.instance.UpdateImage(this._ammoType);
             }
         }
     }
