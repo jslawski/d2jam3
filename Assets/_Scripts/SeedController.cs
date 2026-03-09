@@ -19,10 +19,14 @@ public class SeedController : ProjectileController
             this.projectileRigidbody.isKinematic = true;
 
             StartCoroutine(this.SpawnPlant(collisionPoint, collision.gameObject.transform));
+
+            this.collisionFound = true;
         }
         else if (collision.gameObject.tag == "Plant" || collision.gameObject.tag == "DirtPlant")
         {
             Destroy(this.gameObject);
+
+            this.collisionFound = true;
         }
     }
 
@@ -30,8 +34,8 @@ public class SeedController : ProjectileController
     {
         yield return new WaitForSeconds(this._timeToSpawnPlant);
 
-        GameObject plantInstance = Instantiate(this._plantPrefab, collisionPoint.point, new Quaternion());
-        plantInstance.transform.forward = collisionPoint.normal;
+        GameObject plantInstance = Instantiate(this._plantPrefab, this.gameObject.transform.position, new Quaternion());
+        plantInstance.transform.up = collisionPoint.normal;
 
         PlantController plantController = plantInstance.GetComponent<PlantController>();
         plantController.GrowPlant(collisionPoint.normal, parentTransform);

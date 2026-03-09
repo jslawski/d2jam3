@@ -10,8 +10,7 @@ public class GunController : MonoBehaviour
         public RaycastHit hitInfo;
     }
 
-    [SerializeField]
-    private GameObject _seedPrefab;
+    public GameObject _seedPrefab;
 
     [SerializeField]
     private GameObject _bulletPrefab;
@@ -91,41 +90,11 @@ public class GunController : MonoBehaviour
 
         if (this.hitCheck.success == true)
         {
-            projectileController.Launch(this.hitCheck.hitInfo.point);
+            projectileController.Launch(this.hitCheck.hitInfo.point, this._defaultTarget.position);
         }
         else
         {
-            projectileController.Launch(this._defaultTarget.position);
-        }
-    }
-
-    private void ShootSeed()
-    {
-        GameObject seedInstance = Instantiate(this._seedPrefab, this._seedSpawnPoint.position, new Quaternion());
-        SeedController seedController = seedInstance.GetComponent<SeedController>();
-
-        if (this.hitCheck.success == true)
-        {
-            seedController.Launch(this.hitCheck.hitInfo.point);
-        }
-        else
-        {
-            seedController.Launch(this._defaultTarget.position);
-        }       
-    }
-
-    private void ShootBullet()
-    {
-        GameObject bulletInstance = Instantiate(this._bulletPrefab, this._seedSpawnPoint.position, new Quaternion());
-        BulletController bulletController = bulletInstance.GetComponent<BulletController>();
-
-        if (this.hitCheck.success == true)
-        {
-            bulletController.Launch(this.hitCheck.hitInfo.point);
-        }
-        else
-        {
-            bulletController.Launch(this._defaultTarget.position);
+            projectileController.Launch(this._defaultTarget.position, this._defaultTarget.position);
         }
     }
 
