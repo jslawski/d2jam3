@@ -10,15 +10,24 @@ public class GunChangerZone : MonoBehaviour
     [SerializeField]
     private AudioClip _annoucement;
 
+    [SerializeField]
+    private GameObject _pickupParticleObject;
+
     private void OnTriggerEnter(Collider other)
     {        
         if (other.tag == "Player")
         {
-            other.gameObject.GetComponentInParent<PlayerCharacterController>().gunController._seedPrefab = this._seedPrefab;
+            GunController gunController = other.gameObject.GetComponentInParent<PlayerCharacterController>().gunController;
 
-            AudioChannelSettings channelSettings = new AudioChannelSettings(false, 1.0f, 1.0f, 0.5f, "");
+            if (gunController._seedPrefab != this._seedPrefab)
+            {
+                gunController._seedPrefab = this._seedPrefab;
 
-            AudioManager.instance.Play(this._annoucement, channelSettings);
+                AudioChannelSettings channelSettings = new AudioChannelSettings(false, 1.0f, 1.0f, 0.1f, "");
+                AudioManager.instance.Play(this._annoucement, channelSettings);
+
+                Instantiate(this._pickupParticleObject, this.gameObject.transform.position, new Quaternion());
+            }
         }
     }
 }
