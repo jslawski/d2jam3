@@ -169,7 +169,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _alpha: 1
-    - _chromaticStrength: 1
+    - _chromaticStrength: 0.317
     - _dissolvePower: 1.76
     - _dissolveScale: 6.87
     - _dissolveSpeed: 5.88
@@ -194,7 +194,7 @@ Material:
     - _color2: {r: 0, g: 0.038110673, b: 0.9528302, a: 1}
     - _dissolveSpeed: {r: 0, g: -0.5, b: 0, a: 0}
     - _distortionScrollSpeed: {r: 0, g: -0.12, b: 0, a: 0}
-    - _emission: {r: 675.5879, g: 675.5879, b: 675.5879, a: 1}
+    - _emission: {r: 23.96863, g: 23.96863, b: 23.96863, a: 1}
     - _maskScrollSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _maskTilingOffset: {r: 1, g: 1, b: 0, a: 0}
     - _scrollSpeed: {r: 0, g: 0, b: 0, a: 0}
