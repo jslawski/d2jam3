@@ -168,7 +168,7 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _alpha: 0.041
+    - _alpha: 0.032
     - _chromaticStrength: 0.691
     - _dissolvePower: 1.76
     - _dissolveScale: 6.87
