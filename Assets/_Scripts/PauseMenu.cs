@@ -46,7 +46,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         Cursor.lockState = CursorLockMode.Locked;
-        this._pauseMenuUI.SetActive(false);
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void RestartGame()

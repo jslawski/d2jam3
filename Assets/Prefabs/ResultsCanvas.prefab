@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.03773582, g: 0.03720182, b: 0.03720182, a: 0.94509804}
+  m_Color: {r: 0.03773582, g: 0.03720182, b: 0.03720182, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -683,7 +683,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1240016938877860813
 RectTransform:
   m_ObjectHideFlags: 0
@@ -729,7 +729,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!114 &4834518759496840398
 MonoBehaviour:
@@ -786,7 +786,7 @@ MonoBehaviour:
   backgroundImage: {fileID: 44015651986939254}
   videoTexture: {fileID: 8400000, guid: c79405319a9dde54a9b1e27121bde066, type: 2}
   resultVideoPlayer: {fileID: 284922761939726596}
-  cutsceneFileName: SkeletonShield.mp4
+  cutsceneFileName: BeeFoot.mp4
   timerText: {fileID: 3552428153600269133}
   bestTimeText: {fileID: 3720080981689661648}
 --- !u!1 &8097187751441256956
