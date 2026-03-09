@@ -28,7 +28,7 @@ public class PlantController : MonoBehaviour
     {
         this._parentTransform = parentTransform;
         this.AttachToParent();
-
+        
         Vector3 stemFinalPosition = this._stemTransform.position + (growthNormal * (0.5f * this._plantMaxLength));
         Vector3 budFinalPosition = this._stemTransform.position + (growthNormal * this._plantMaxLength);        
 
@@ -47,6 +47,10 @@ public class PlantController : MonoBehaviour
         .Join(budMoveTween)
         .Join(budGrowTween)
         .AppendCallback(parentCallback);
+        
+         
+
+
     }
 
     protected void AttachToParent()
@@ -63,6 +67,14 @@ public class PlantController : MonoBehaviour
 
         for (int i = 0; i < plantParts.Length; i++)
         {
+            Animator potentialAnimator = plantParts[i].gameObject.GetComponent<Animator>();
+
+
+            if (potentialAnimator != null)
+            {
+                potentialAnimator.enabled = false;
+            }
+        
             plantParts[i].parent = null;
             plantParts[i].gameObject.layer = 0;
             plantParts[i].gameObject.tag = "Untagged";
@@ -75,7 +87,7 @@ public class PlantController : MonoBehaviour
 
             if (softDestroy == true)
             {
-                randomMagnitude = Random.Range(10.0f, 20.0f);
+                randomMagnitude = Random.Range(5.0f, 10.0f);
 
                 float randomX = Random.Range(-0.3f, 0.3f);
                 float randomZ = Random.Range(-0.3f, 0.3f);
@@ -84,7 +96,7 @@ public class PlantController : MonoBehaviour
             }
             else
             {
-                randomMagnitude = Random.Range(10.0f, 50.0f);
+                randomMagnitude = Random.Range(10.0f, 15.0f);
                 randomDirection = Random.onUnitSphere;
             }
 
