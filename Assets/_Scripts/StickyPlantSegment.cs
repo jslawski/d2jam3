@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class StickyPlantSegment : PlantController
@@ -17,6 +18,35 @@ public class StickyPlantSegment : PlantController
 
     private StickyPlant _stickyPlantController;
 
+    [SerializeField]
+    private Transform _segmentLeaves;
+
+    public void GrowSegment(StickyPlant stickyPlantController, Vector3 growthNormal, Transform parentTransform)
+    {
+        float randomAngle = Random.Range(0.0f, 360f);
+
+        this._segmentLeaves.localRotation = Quaternion.Euler(this._segmentLeaves.localRotation.eulerAngles.x, randomAngle, this._segmentLeaves.localRotation.eulerAngles.z);
+    
+        this._nextSegmentObject = Resources.Load<GameObject>("StickySegment");
+        this._stickyPlantController = stickyPlantController;
+        this._growthNormal = growthNormal;
+        this._previousSegmentParent = parentTransform;
+
+        Vector3 stemFinalPosition = this._stemTransform.position + (growthNormal * this._segmentLength);
+
+        this._newSegmentParent = parentTransform;
+        this._newSegmentStartPosition = stemFinalPosition + (growthNormal * this._segmentLength);
+
+        StartCoroutine(this.GrowNextSegmentAfterDelay());
+    }
+
+    private IEnumerator GrowNextSegmentAfterDelay()
+    {
+        yield return new WaitForSeconds(0.3f);
+        this.GrowNextVineSegment();
+    }
+
+    /*
     public void GrowSegment(StickyPlant stickyPlantController, Vector3 growthNormal, Transform parentTransform)
     {
         this._timeToGrow = 0.1f;
@@ -47,7 +77,7 @@ public class StickyPlantSegment : PlantController
         .Join(stemGrowTween)
         .AppendCallback(nextSegmentCallback);        
     }
-
+    */
     private void GrowNextVineSegment()
     {
         this._stickyPlantController.IncrementSegmentCount();        

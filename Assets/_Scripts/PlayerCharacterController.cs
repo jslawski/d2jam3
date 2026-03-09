@@ -24,7 +24,7 @@ public class PlayerCharacterController : MonoBehaviour
     private float _isGroundedDistance = 0.1f;
     private float _maxVerticalAngle = 90.0f;
     private float _jumpForce = 20.0f;
-    private float _unstickJumpForce = 40.0f;
+    private float _unstickJumpForce = 30.0f;
     private bool _jumpBuffered = false;
 
     private bool _isGroundedThisFrame = false;
@@ -275,10 +275,12 @@ public class PlayerCharacterController : MonoBehaviour
             float ZForce = this._stuckJumpNormal.z * this._jumpForce * 3.0f;
             */
 
+            Vector3 unstuckJumpVector = new Vector3(Camera.main.transform.forward.x, (Vector3.up.y * 0.5f), Camera.main.transform.forward.z).normalized * this._unstickJumpForce;
+            /*
             Vector3 unstuckJumpVector = new Vector3(Camera.main.transform.forward.x * this._unstickJumpForce, 
                                                 Vector3.up.y * this._jumpForce, 
                                                 Camera.main.transform.forward.z * this._unstickJumpForce);
-
+                                                */
             Debug.LogError("Launch Vector: " + unstuckJumpVector);
 
             this._playerRigidbody.velocity = unstuckJumpVector;
