@@ -17,7 +17,7 @@ public class PlayerCharacterController : MonoBehaviour
     private Coroutine _moveLerpCoroutine = null;
     
     private Quaternion _targetRotation = Quaternion.identity;
-    private float _cameraRotateSpeed = 15.0f;
+    private float _cameraRotateSpeed = 8.0f;
     private Coroutine _cameraSlerpCoroutine = null;
 
 
@@ -112,9 +112,11 @@ public class PlayerCharacterController : MonoBehaviour
         Quaternion yRotation = Quaternion.AngleAxis(PlayerControlsManager.instance.lookDelta.y, Vector3.up);   
         Quaternion xRotation = Quaternion.Euler(this.GetClampedXAngle(), this._cameraTransform.rotation.eulerAngles.y, 0.0f);        
 
+        
+
         this._targetRotation = yRotation * xRotation;
 
-        this._cameraTransform.rotation = this._targetRotation;
+        //this._cameraTransform.rotation = this._targetRotation;
         
         if (this._cameraSlerpCoroutine != null)
         {
