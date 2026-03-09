@@ -12,11 +12,17 @@ EditorBuildSettings:
     path: Assets/Scenes/SplashScene.unity
     guid: 5c960224cc87a5b4a9168ac88a012893
   - enabled: 1
+    path: Assets/Scenes/CutsceneScene.unity
+    guid: 6cbc457005d0a7347bd7a7e735f7ddb7
+  - enabled: 1
     path: Assets/Scenes/JaredScene.unity
     guid: fcc8ca58ccf5a4d42a4b5ed0725fc9da
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 56bff40ff6497ce47a8f9d2e661d94cb
+  - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: 6673539d21d8e12428a2e023fc16b120
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 640fb3975c6e7b04ca7445682be715b7,
       type: 3}

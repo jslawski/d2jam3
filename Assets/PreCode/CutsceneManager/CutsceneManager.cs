@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +23,15 @@ public class CutsceneManager : MonoBehaviour
     private FadePanelManager fadePanel;
     [SerializeField]
     private VideoPlayer cutscenePlayer;
-
+    [SerializeField]
+    private Image skipFiller;
+    private bool loading = false;
+    private bool isSkipping = false;
+    private float skipKeyHoldDuration = 1.2f;
+    public float fadeOutDelay = 8f;
+    public float skipTimer = 0f;
+    private bool skipped = false;
+    
     private delegate void CutsceneComplete();
     private delegate void OnCutscenePrepared();
 
@@ -32,11 +41,18 @@ public class CutsceneManager : MonoBehaviour
         {
             instance = this;
         }
+
+        this.fadePanel = GameObject.Find("SceneLoader").GetComponentInChildren<FadePanelManager>();
     }
 
     private void Start()
+    {        
+        this.PlayVideoCutscene("FalloutNewVegas.mp4", false, this.LoadNextScene);
+    }
+
+    private void LoadNextScene()
     {
-        //Cursor.visible = false;
+        SceneLoader.instance.LoadScene("MainMenu");
     }
 
     #region Utility
@@ -46,6 +62,54 @@ public class CutsceneManager : MonoBehaviour
         this.cutsceneImage.texture = imageTexture;
     }
 
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(0))
+        {
+            isSkipping = true;
+        }
+        
+        if (Input.GetKeyUp(KeyCode.Escape) || Input.GetMouseButtonUp(0))
+        {
+            skipFiller.fillAmount = 0;
+            isSkipping = false;
+            skipTimer = 0f;
+        }
+
+        if (isSkipping && !skipped)
+        {
+            skipTimer += Time.deltaTime;
+            skipFiller.fillAmount = skipTimer / skipKeyHoldDuration;
+            if (skipTimer > skipKeyHoldDuration)
+            {
+                StartCoroutine(FadeOutVideoVolume());
+                LoadNextScene();
+                skipped = true;
+
+            }
+        }
+    }
+
+    public IEnumerator FadeOutVideoVolume()
+    {
+        AudioSource aSource = cutscenePlayer.GetTargetAudioSource(0);
+        if (aSource)
+        {
+            while (aSource.volume > 0f)
+            {
+                aSource.volume -= Time.deltaTime * 0.01f;
+                yield return 0;
+            }    
+        }
+        else
+        {
+            float vol = cutscenePlayer.GetDirectAudioVolume(0);
+            vol -= Time.deltaTime * 0.01f;
+            cutscenePlayer.SetDirectAudioVolume(0,vol);
+        }
+    }
+    
     private void PlayVideoCutscene(string cutsceneFileName, bool looping = false, CutsceneComplete functionAfterComplete = null)
     {
         this.cutscenePlayer.Stop();

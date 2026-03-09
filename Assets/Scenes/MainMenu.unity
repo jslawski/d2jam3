@@ -919,7 +919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fac0b99869c864c97b7194d3c40b8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextSceneToLoad: JaredScene
+  _nextSceneToLoad: MainScene
 --- !u!1 &2015260866
 GameObject:
   m_ObjectHideFlags: 0

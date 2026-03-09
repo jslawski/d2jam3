@@ -596,6 +596,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 72
   _gunAnimator: {fileID: 0}
+  _shootSound: {fileID: 0}
 --- !u!1 &7875369002190430507
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,3 +817,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 72
   _gunAnimator: {fileID: 4234055695358231801}
+  _shootSound: {fileID: 8300000, guid: 48c85aecabbb52744bb21d2b46ecec15, type: 3}

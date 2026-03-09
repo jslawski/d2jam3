@@ -36,6 +36,9 @@ public class GunController : MonoBehaviour
     [SerializeField]
     private Animator _gunAnimator;
 
+    [SerializeField]
+    private AudioClip _shootSound;
+
     private void Awake()
     {
         //this._seedSpawnPoint = Camera.main.transform;
@@ -89,7 +92,10 @@ public class GunController : MonoBehaviour
     private void ShootProjectile(GameObject projectile)
     {
         this._gunAnimator.SetTrigger("Fire");
-    
+
+        AudioChannelSettings channelSettings = new AudioChannelSettings(false, 0.9f, 1.1f, 0.03f, "");
+        AudioManager.instance.Play(this._shootSound, channelSettings);
+
         GameObject projectileInstance = Instantiate(projectile, this._seedSpawnPoint.position, new Quaternion());
         ProjectileController  projectileController = projectileInstance.GetComponent<ProjectileController>();
 
