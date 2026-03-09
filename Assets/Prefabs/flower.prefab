@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3574504522778356524}
   - component: {fileID: 1614320788268933927}
   - component: {fileID: 8687946563647868181}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: flowerHead
   m_TagString: Plant
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 2256850164390023328}
   - component: {fileID: 5601579733930878952}
   - component: {fileID: 6268504762081727719}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: flowerStem
   m_TagString: Plant
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4038950700049745187}
   - component: {fileID: 2379195597790640811}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: flower
   m_TagString: Plant
   m_Icon: {fileID: 0}
@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 7260431757097713363}
   - component: {fileID: 3327024332289109420}
   - component: {fileID: 5222730512250852032}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: flowerLeaves
   m_TagString: Plant
   m_Icon: {fileID: 0}

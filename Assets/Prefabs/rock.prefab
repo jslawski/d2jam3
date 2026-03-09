@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9086589220635703587}
   - component: {fileID: 752213582887712244}
   - component: {fileID: 426874805830015648}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: rock
   m_TagString: Plantable
   m_Icon: {fileID: 0}
