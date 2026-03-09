@@ -56,17 +56,8 @@ public class SplashMenu : MonoBehaviour
     private IEnumerator DisplayCoroutine()
     {
         yield return new WaitForSeconds(fadeOutDelay);
-        
-        string playerName = PlayerPrefs.GetString("username", string.Empty);
 
-        if (playerName == string.Empty)
-        {
-            SceneLoader.instance.LoadScene("LoginScene");
-        }
-        else
-        {
-            SceneLoader.instance.LoadScene("MainMenu");
-        }
+        SceneLoader.instance.LoadScene(this.nextSceneName);
     }
 
     private void Update()
@@ -89,15 +80,7 @@ public class SplashMenu : MonoBehaviour
             skipFiller.fillAmount = skipTimer / skipKeyHoldDuration;
             if (skipTimer > skipKeyHoldDuration)
             {
-                string playerName = PlayerPrefs.GetString("username", string.Empty);
-                if (playerName == string.Empty)
-                {
-                    SceneLoader.instance.LoadScene("LoginScene");
-                }
-                else
-                {
-                    SceneLoader.instance.LoadScene("MainMenu");
-                }
+                SceneLoader.instance.LoadScene(this.nextSceneName);
 
                 StartCoroutine(FadeOutVideoVolume());
                 skipped = true;
