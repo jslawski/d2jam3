@@ -47,7 +47,7 @@ public class CutsceneManager : MonoBehaviour
 
     private void Start()
     {        
-        this.PlayVideoCutscene("FalloutNewVegas.mp4", false, this.LoadNextScene);
+        this.PlayVideoCutscene("Bloomstick_Intro_000.mp4", false, this.LoadNextScene);
     }
 
     private void LoadNextScene()
