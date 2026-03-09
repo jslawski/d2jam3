@@ -18,7 +18,9 @@ public class SeedController : ProjectileController
             this.projectileRigidbody.gameObject.transform.position = collisionPoint.point;
             this.projectileRigidbody.isKinematic = true;
 
-            StartCoroutine(this.SpawnPlant(collisionPoint, collision.gameObject.transform));
+            this.gameObject.transform.parent = this.GetTopLevelParent(collision.gameObject.transform);
+
+            StartCoroutine(this.SpawnPlant(collisionPoint, this.GetTopLevelParent(collision.gameObject.transform)));
 
             this.collisionFound = true;
         }
@@ -41,5 +43,17 @@ public class SeedController : ProjectileController
         plantController.GrowPlant(collisionPoint.normal, parentTransform);
 
         Destroy(this.gameObject);
+    }
+
+    private Transform GetTopLevelParent(Transform initialTransform)
+    {
+        Transform currentParent = initialTransform;
+
+        while ((currentParent.parent != null))
+        {
+            currentParent = currentParent.parent;
+        }
+
+        return currentParent;
     }
 }

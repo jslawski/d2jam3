@@ -24,7 +24,8 @@ public class PlantController : MonoBehaviour
 
     public virtual void GrowPlant(Vector3 growthNormal, Transform parentTransform)
     {
-        this._parentTransform = parentTransform;    
+        this._parentTransform = parentTransform;
+        this.AttachToParent();
 
         Vector3 stemFinalPosition = this._stemTransform.position + (growthNormal * (0.5f * this._plantMaxLength));
         Vector3 budFinalPosition = this._stemTransform.position + (growthNormal * this._plantMaxLength);        
@@ -48,10 +49,10 @@ public class PlantController : MonoBehaviour
 
     protected void AttachToParent()
     {
-        if (this._parentTransform.gameObject.layer == LayerMask.NameToLayer("Plant"))
-        {
+        //if (this._parentTransform.gameObject.layer == LayerMask.NameToLayer("Plant"))
+        //{
             this.gameObject.transform.parent = this._parentTransform;
-        }            
+        //}            
     }
 
     public virtual void DestroyPlant(bool softDestroy = false)

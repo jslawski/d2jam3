@@ -19,7 +19,7 @@ public class StickyPlantSegment : PlantController
 
     public void GrowSegment(StickyPlant stickyPlantController, Vector3 growthNormal, Transform parentTransform)
     {
-        this._timeToGrow = 0.1f;
+        this._timeToGrow = 1.1f;
 
         this._nextSegmentObject = Resources.Load<GameObject>("StickySegment");
         
