@@ -47,10 +47,6 @@ public class PlantController : MonoBehaviour
         .Join(budMoveTween)
         .Join(budGrowTween)
         .AppendCallback(parentCallback);
-        
-         
-
-
     }
 
     protected void AttachToParent()

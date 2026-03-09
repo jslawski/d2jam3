@@ -121,7 +121,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileRigidbody: {fileID: -5199623998507818058}
   launchSpeed: 30
+  collisionFound: 0
   _plantPrefab: {fileID: 272436539018465319, guid: 5513e22f79435ed45bac9b951420fb5b,
+    type: 3}
+  _flowerBurstParticlePrefab: {fileID: 7502642419937719852, guid: 8418d2a74a5055f4dbf5d8d9e70f87fe,
     type: 3}
 --- !u!54 &-5199623998507818058
 Rigidbody:
