@@ -33,6 +33,9 @@ public class GunController : MonoBehaviour
 
     RaycastHitCheck hitCheck = new RaycastHitCheck();
 
+    [SerializeField]
+    private Animator _gunAnimator;
+
     private void Awake()
     {
         //this._seedSpawnPoint = Camera.main.transform;
@@ -85,6 +88,8 @@ public class GunController : MonoBehaviour
 
     private void ShootProjectile(GameObject projectile)
     {
+        this._gunAnimator.SetTrigger("Fire");
+    
         GameObject projectileInstance = Instantiate(projectile, this._seedSpawnPoint.position, new Quaternion());
         ProjectileController  projectileController = projectileInstance.GetComponent<ProjectileController>();
 
