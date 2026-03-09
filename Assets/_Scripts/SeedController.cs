@@ -64,8 +64,6 @@ public class SeedController : ProjectileController
             }
         }
 
-        Debug.LogError("Selected Parent: " + currentParent.gameObject.name);
-
         return currentParent;
     }
 }
