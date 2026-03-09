@@ -16,6 +16,6 @@ public class BasicFlower : PlantController
             this._flowerBudTransform.up = Vector3.up;
         }
 
-        this.gameObject.transform.parent = this._parentTransform;
+        this.gameObject.transform.parent = parentTransform;
     }
 }
