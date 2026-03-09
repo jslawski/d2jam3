@@ -22,6 +22,8 @@ public class PlantController : MonoBehaviour
 
     public bool isSticky = false;
 
+    public GameObject stuckObject;
+
     public virtual void GrowPlant(Vector3 growthNormal, Transform parentTransform)
     {
         this._parentTransform = parentTransform;
@@ -56,7 +58,7 @@ public class PlantController : MonoBehaviour
     }
 
     public virtual void DestroyPlant(bool softDestroy = false)
-    {
+    {    
         Transform[] plantParts = this.GetComponentsInChildren<Transform>();
 
         for (int i = 0; i < plantParts.Length; i++)

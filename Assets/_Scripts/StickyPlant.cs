@@ -39,6 +39,11 @@ public class StickyPlant : PlantController
     {
         this.StopGrowth();
 
+        if (this.stuckObject != null)
+        {
+            this.stuckObject.transform.parent = null;
+        }
+
         Transform[] plantParts = this.GetComponentsInChildren<Transform>();
 
         for (int i = 0; i < plantParts.Length; i++)

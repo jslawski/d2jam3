@@ -31,9 +31,13 @@ public class PlayerCharacterController : MonoBehaviour
 
     private Vector3 _stuckJumpNormal = Vector3.zero;
     private Vector3 _stuckMoveDirection = Vector3.zero;
+    private Vector3 _localStuckContactPointOffset = Vector3.zero;
 
     public GunController gunController;
 
+    public GameObject debugObject;
+
+    public LayerMask stickyLayerMask;
     private void Awake()
     {      
         this._cameraTransform = Camera.main.transform;
@@ -63,6 +67,12 @@ public class PlayerCharacterController : MonoBehaviour
 
                 PlayerControlsManager.instance.jumpInitiated = false;
             }
+        }
+         
+        
+        if ( this._stuckJumpNormal != Vector3.zero && this.IsStillAttached() == false)
+        {
+            this.UnstickPlayer();
         }
 
         //Debug.LogError("Stuck? " + (this._stuckNormal != Vector3.zero) + "Use Gravity?" + this._playerRigidbody.useGravity);
@@ -327,11 +337,12 @@ public class PlayerCharacterController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Plantable" && this._stuckJumpNormal != Vector3.zero)
+    /*    
+    if (collision.gameObject.tag == "Plantable" && this._stuckJumpNormal != Vector3.zero)
         {
             this.UnstickPlayer();
         }
-    
+    */
         if (collision.gameObject.tag == "DirtPlant" || (collision.gameObject.tag == "Plantable" && collision.gameObject.layer == LayerMask.NameToLayer("Plant")))
         {
             this.GetTopParent(collision.gameObject.transform).GetComponent<PlantController>().DestroyPlant(true);
@@ -363,7 +374,9 @@ public class PlayerCharacterController : MonoBehaviour
     */
     private void StickPlayer(Transform parentTransform, Collision collision)
     {
-        this.gameObject.transform.parent = parentTransform;
+        parentTransform.gameObject.GetComponent<PlantController>().stuckObject = this.gameObject;
+        //this.gameObject.transform.parent = parentTransform;
+        this._localStuckContactPointOffset = (collision.GetContact(0).point - this.gameObject.transform.position);
         this._stuckJumpNormal = collision.contacts[0].normal;
         this._stuckMoveDirection = collision.gameObject.transform.up;
         this._playerRigidbody.useGravity = false;
@@ -377,7 +390,7 @@ public class PlayerCharacterController : MonoBehaviour
 
     private void UnstickPlayer()
     {
-        this.gameObject.transform.parent = null;
+       this.gameObject.transform.parent = null;
 
         this._stuckJumpNormal = Vector3.zero;
 
@@ -402,5 +415,24 @@ public class PlayerCharacterController : MonoBehaviour
         }
 
         return currentParent;
+    }
+
+    //Raycast in the direction of the normal from the contact point
+    private bool IsStillAttached()
+    {       
+       Vector3 worldStuckContactPoint = this.gameObject.transform.position + (this._localStuckContactPointOffset * 0.8f);
+
+        //Debug.DrawLine(worldStuckContactPoint, worldStuckContactPoint + (-this._stuckJumpNormal * 1.0f), Color.red, 10.0f);
+
+
+       if (Physics.Raycast(worldStuckContactPoint, -this._stuckJumpNormal, 1.0f, this.stickyLayerMask))
+        {
+            return true;
+        }
+
+        //Instantiate(debugObject, worldStuckContactPoint, new Quaternion());
+        //Instantiate(debugObject, worldStuckContactPoint + (-this._stuckJumpNormal * 1.0f), new Quaternion());
+
+        return false;
     }
 }

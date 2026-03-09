@@ -27,7 +27,7 @@ public class StickyPlantSegment : PlantController
         this._growthNormal = growthNormal;
         this._previousSegmentParent = parentTransform;
 
-        Debug.LogError("GrowthNormal: " + growthNormal + " Magnitude: " + growthNormal.magnitude);
+        //Debug.LogError("GrowthNormal: " + growthNormal + " Magnitude: " + growthNormal.magnitude);
 
         Vector3 stemFinalPosition = this._stemTransform.position + (growthNormal * this._segmentLength);
 

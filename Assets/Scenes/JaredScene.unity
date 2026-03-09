@@ -3763,6 +3763,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerFeetCollider: {fileID: 901828339}
   gunController: {fileID: 490139850}
+  debugObject: {fileID: 1279336900507950682, guid: 0add466b9c5e0fe4b9879efe4d8d463f,
+    type: 3}
+  stickyLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!114 &1588336419
 MonoBehaviour:
   m_ObjectHideFlags: 0
